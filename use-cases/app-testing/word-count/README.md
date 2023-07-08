@@ -27,7 +27,7 @@ stream of files, splits it into words, and stores word fre-quencies into another
   
   Aggegation
   
-## Input details
+## Input details (Spark)
 1. dataDir: contains textual data files.
 2. topicConfiguration.yaml :
    - contains topic configurations
@@ -54,6 +54,19 @@ stream of files, splits it into words, and stores word fre-quencies into another
          - for CUSTOM consumer, specify the consumer script path and number of consumer instances in this node.
      - sparkConfig: sparkConfig will contain the spark application path and output sink. Output sink can be kafka topic/a file directory.
  
-## Running
-   
+## Input details (Flink)
+Same as for Spark except. 
+1. flink-word-count/flink-word-count.py contains flink application
+2. flink\_input.graphml contains modified topology description where the node containing
+the spe has changed to a flink node using yamlconfig/spe-flink.yaml
+
+## Running (Spark)
  ```sudo python3 main.py use-cases/app-testing/word-count/input.graphml```
+
+
+## Runnning (Flink)
+
+ ```sudo python3 main.py use-cases/app-testing/word-count/flink_input.graphml``` 
+
+
+
