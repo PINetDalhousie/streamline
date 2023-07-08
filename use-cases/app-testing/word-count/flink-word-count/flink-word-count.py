@@ -8,23 +8,30 @@ from pyflink.datastream.connectors.file_system import FileSource, StreamFormat, 
 from pyflink.datastream.connectors import KafkaSource
 from pyflink.datastream.connectors.kafka import KafkaSink, KafkaRecordSerializationSchema
 from pyflink.common import SimpleStringSchema
-log_file_path = "kafka_flink.log"
+log_file_path = "logs/output/flink.log"
+IN_TOPIC = "inTopic" #Same as in spark
+OUT_TOPIC = "outTopic"
+logging.basicConfig(filename=log_file_path, level=logging.INFO, \
+        format="%(asctime)s %(levelname)s: %(message)s", \
+        level=logging.INFO)
+logging.info("input: "+IN_TOPIC)
+logging.info("output: "+ OUT_TOPIC)
 
-logging.basicConfig(filename=log_file_path, level=logging.INFO, format="%(message)s")
 def word_count(input_path, output_path):
     env = StreamExecutionEnvironment.get_execution_environment()
+    logging.info("created environment")
     env.set_runtime_mode(RuntimeExecutionMode.STREAMING)
     # write all the data to one file
     env.set_parallelism(1)
-    kafka_topic = "inTopic" #Same as in spark
-    
+    kafka_node = "10.0.0.2:9092"
     kafka_source = KafkaSource.builder() \
 	.set_value_only_deserializer(SimpleStringSchema()) \
-	.set_bootstrap_servers("10.0.0.2:9092") \
-	.set_topics(kafka_topic) \
+	.set_bootstrap_servers(kafka_node) \
+	.set_topics(IN_TOPIC) \
 	.set_group_id("group_id") \
 	.build()
-    logging.info("builded kafka source")	
+
+    logging.info("connected to kafka source at:", kafka_node)	
     
     ds = env.from_source(
 	source = kafka_source,
@@ -41,27 +48,21 @@ def word_count(input_path, output_path):
         .key_by(lambda i: i[0]) \
         .reduce(lambda i, j: (i[0], i[1] + j[1])) \
         .map(lambda i: f'{i[0]}: {i[1]}', output_type = Types.STRING())
-    out_topic = "outTopic"
+
     # define the sink
-    print("defining sink")
-    if output_path is None:
-        serializer = KafkaRecordSerializationSchema.builder().set_topic(out_topic).set_value_serialization_schema(SimpleStringSchema()).build()
+    serializer = KafkaRecordSerializationSchema.builder().set_topic(OUT_TOPIC).set_value_serialization_schema(SimpleStringSchema()).build()
 	
-        print("builded serialzer", flush=True)
-        sink = KafkaSink.builder() \
-	      .set_bootstrap_servers("10.0.0.2:9092") \
-	      .set_record_serializer(serializer) \
-              .build()
-        print("builded sink",flush=True)
-        ds.sink_to(sink)
-    else:
-        print("Printing result to stdout. Use --output to specify output path.")
-        ds.print()
-    print("executing")
+    
+    sink = KafkaSink.builder() \
+	  .set_bootstrap_servers(kafka_node) \
+	  .set_record_serializer(serializer) \
+          .build()
+    ds.sink_to(sink)
+    logging.info("executing")
+    logging.info("Output to broker at", kafka_node)
     # submit for execution
     env.execute()
 if __name__ == '__main__':
-    logging.basicConfig(stream=sys.stdout, level=logging.INFO, format="%(message)s")
 
     parser = argparse.ArgumentParser()
     parser.add_argument(
