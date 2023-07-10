@@ -64,8 +64,8 @@ the spe has changed to a flink node using yamlconfig/spe-flink.yaml
  ```sudo python3 main.py use-cases/app-testing/word-count/input.graphml```
 
 
-## Runnning (Flink)
-
+## Runnning (Flink) 
+Need to run flink-use/use-flink.py to first install the dependencies. Then:     
  ```sudo python3 main.py use-cases/app-testing/word-count/flink_input.graphml``` 
 
 
