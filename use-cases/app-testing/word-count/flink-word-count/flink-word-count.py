@@ -1,11 +1,11 @@
 ## Command to run script: 
 #first, need to be in pyflink directory.
-# then enter command: sudo bin/flink run --target local --python ../use-cases/app-testing/word-count/flink-word-count/flink-word-count.py --jarfile ../dependency/jars/flink-sql-connector-kafka-1.17.1.jar
+# then enter command: sudo env "PYTHONPATH=$PYTHONPATH:." pyflink/ bin/flink run --target local --python ../use-cases/app-testing/word-count/flink-word-count/flink-word-count.py --jarfile ../dependency/jars/flink-sql-connector-kafka-1.17.1.jar
 
 import argparse
 import logging
 import sys
-sys.path.append(".")
+#sys.path.append(".")
 from pyflink.common.watermark_strategy import WatermarkStrategy
 from pyflink.common.serialization import Encoder
 from pyflink.common.typeinfo import Types
