@@ -168,6 +168,7 @@ def spawnConsumers(net, consDetailsList, topicPlace):
 		except IndexError:
 			print("Error: Consume topic name not matched with the already created topics")
 			sys.exit(1)
+	
 
 def spawnSPEClients(net, streamProcDetailsList):
 	netNodes = {}
@@ -180,8 +181,10 @@ def spawnSPEClients(net, streamProcDetailsList):
 		
 		speNode = spe["nodeId"]
 		speApp = spe["applicationPath"]
+		speType = spe["streamProcType"]
 		print("spe node: "+speNode)
 		print("spe App: "+speApp)
+		print("spe: ", speType)
 		print("*************************")
 
 		speID = "h"+speNode
@@ -189,10 +192,16 @@ def spawnSPEClients(net, streamProcDetailsList):
 
 		# node.popen("sudo spark/pyspark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1 "+sparkApp\
 		# 			+" "+str(node.name)+" "+sparkOutputTo+" &", shell=True)
-
-		node.popen("sudo spark/pyspark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1 "+speApp\
+		if speType == "Spark":
+			node.popen("sudo spark/pyspark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1 "+speApp\
 					+" &", shell=True)
-
+		elif speType == "Flink":
+			if not(os.path.exists("pyflink/bin")): 
+				print("pyflink is not installed in the pyflink directory, please run use_pyflink.py to install")
+				sys.exit(1)
+			else:
+				node.popen("sudo env \"PYTHONPATH=$PYTHONPATH:.\" pyflink/bin/flink run --target local --python ../"+ speApp + " --jarfile ../dependency/jars/flink-sql-connector-kafka-1.17.1.jar" + " &", shell=True, cwd="pyflink")
+		#more elif's for more spes 
 
 def spawnKafkaDataStoreConnector(net, prodDetailsList, storePath):
 	netNodes = {}
