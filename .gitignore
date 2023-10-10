@@ -18,11 +18,12 @@ use-cases/app-testing/document-analytics/yamlConfig/consumerConfigurationHost1.y
 use-cases/app-testing/document-analytics/yamlConfig/consumerConfigurationHost2.yaml
 use-cases/app-testing/document-analytics/yamlConfig/consumerConfigurationHost3.yaml
 use-cases/varying-networking-conditions/varying-link-latency/word-count/testbedResults/
-use-cases/varying-networking-conditions/varying-link-latency/word-count/testbedScripts/
+# use-cases/varying-networking-conditions/varying-link-latency/word-count/testbedScripts/
 use-cases/varying-networking-conditions/varying-link-latency/word-count/simulationResults/
-use-cases/varying-networking-conditions/varying-link-latency/word-count/simulationScripts/
+# use-cases/varying-networking-conditions/varying-link-latency/word-count/simulationScripts/
 use-cases/varying-networking-conditions/varying-link-latency/word-count/MFSTDataDir/
 use-cases/varying-networking-conditions/varying-link-latency/word-count/input-original.graphml
-use-cases/varying-networking-conditions/varying-link-latency/word-count/yamlConfig/producerConfiguration-temp.yaml
+# use-cases/varying-networking-conditions/varying-link-latency/word-count/yamlConfig/producerConfiguration-temp.yaml
+use-cases/varying-networking-conditions/varying-link-bw/word-count/MFSTDataDir/
 tempScript.py
 use-cases/app-testing/document-analytics/demo/
