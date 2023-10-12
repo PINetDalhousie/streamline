@@ -93,16 +93,17 @@ def aggregatedPlot(portFlag,x,y, yLeaderLess, yLabel, msgSize, countX,
     plt.ylabel(yLabel, fontsize=22, fontweight='bold', labelpad=10)
     
     plt.xlim([0,400])
-    # plt.ylim([0, 100])
+    plt.ylim([0, 10])
     
     plt.xticks(np.arange(0,401, step=100))
-    # plt.yticks(np.arange(0,100.1, step=20))
+    plt.yticks(np.arange(0,10.1, step=2))
     
     ax = plt.gca()
+    
     ax.xaxis.set_tick_params(labelsize=18, pad=5)
     ax.yaxis.set_tick_params(labelsize=18, pad=5)
 
-    plt.legend(frameon=False, loc='upper left', fontsize=18)
+    plt.legend(frameon=True, loc='lower right', fontsize=12, borderpad=0.5, labelspacing=0.5)
     
 
 #checking input vs output to measure control traffic overhead
@@ -208,7 +209,14 @@ print("Aggregated plot created for link bandwidth 20Mbps node scenario (scenario
 
 logDirectory = args.logDir.replace("scenario-4", "scenario-5")
 logDirectory = logDirectory + "/bandwidth/"
-plotAggregatedBandwidth(scenario=5, label='1000Mbps', color='red', ls='dashed', lw=3.0, cap=9.0)      #for aggregated plot    
-print("Aggregated plot for all created.")     
+plotAggregatedBandwidth(scenario=5, label='1000Mbps', color='green', ls='dashed', lw=3.0, cap=9.0)      #for aggregated plot    
+print("Aggregated plot created for link bandwidth 1000Mbps node scenario (scenario 4).")   
+
+logDirectory = args.logDir.replace("scenario-4", "scenario-6")
+logDirectory = logDirectory + "/bandwidth/"
+plotAggregatedBandwidth(scenario=6, label='10Mbps', color='red', ls='dashed', lw=3.0, cap=9.0)      #for aggregated plot    
+print("Aggregated plot created for link bandwidth 10Mbps node scenario (scenario 6).")
+
+print("Aggregated plot for all created.") 
 
 plt.savefig("use-cases/varying-networking-conditions/varying-link-bw/military-coordination/plots/combinedThroughput", bbox_inches="tight")
