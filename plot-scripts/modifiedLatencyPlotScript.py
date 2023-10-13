@@ -367,23 +367,38 @@ def plotLatencyCDF():
     plt.savefig(logDir+"CDF",bbox_inches="tight")
       
 # # user-input
-# parser = argparse.ArgumentParser(description='Script for measuring latency for each message.')
-# parser.add_argument('--number-of-switches', dest='switches', type=int, default=0, help='Number of switches')
-# parser.add_argument('--log-dir', dest='logDir', type=str, help='Producer log directory')
+parser = argparse.ArgumentParser(description='Script for measuring latency for each message.')
+parser.add_argument('--number-of-switches', dest='switches', type=int, default=10, help='Number of switches')
+parser.add_argument('--log-dir', dest='logDir', type=str, default="logs/output/", help='Producer log directory')
+parser.add_argument('--ntopic', dest='nTopic', type=int, default=2, help='Number of topics')
 
-# args = parser.parse_args()
+args = parser.parse_args()
 
-# Hard-coded input
-prodDetails = [{'prodNodeID':1, 'prodInstID':1}, {'prodNodeID':2, 'prodInstID':1}, {'prodNodeID':3, 'prodInstID':1}]
-consDetails = [{'consNodeID':1, 'consInstID':1}, {'consNodeID':2, 'consInstID':1}, {'consNodeID':3, 'consInstID':1}]
+# 
+prodDetails=[]
+consDetails=[]
+i=1
+while i<=args.switches:
+    prodDict = {'prodNodeID':i, 'prodInstID':1}
+    prodDetails.append(prodDict)
+    consDict = {'consNodeID':i, 'consInstID':1}
+    consDetails.append(consDict)
+    i+=1
 nProducer = len(prodDetails)
 nConsumer = len(consDetails)
-logDir = 'stream2gym/logs/output/'
-nTopic = 1
-print(nProducer)
+logDir = args.logDir
+switches = args.switches
+nTopic = args.nTopic
 
-switches = 3 #args.switches
-# logDir = args.logDir
+# Hard-coded input
+# prodDetails = [{'prodNodeID':1, 'prodInstID':1}, {'prodNodeID':2, 'prodInstID':1}, {'prodNodeID':3, 'prodInstID':1}]
+# consDetails = [{'consNodeID':1, 'consInstID':1}, {'consNodeID':2, 'consInstID':1}, {'consNodeID':3, 'consInstID':1}]
+# nProducer = len(prodDetails)
+# nConsumer = len(consDetails)
+# logDir = 'stream2gym/logs/output/'
+# nTopic = 1
+# print(nProducer)
+# switches = 3 
 
 os.system("sudo rm "+logDir+"latency-log.txt"+"; sudo touch "+logDir+"latency-log.txt")  
 os.makedirs(logDir+"cons-latency-logs", exist_ok=True)

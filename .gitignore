@@ -29,3 +29,4 @@ use-cases/app-testing/document-analytics/demo/
 use-cases/varying-networking-conditions/varying-link-bw/military-coordination/logs/
 use-cases/varying-networking-conditions/varying-link-bw/word-count/MFSTDataDir/
 use-cases/varying-networking-conditions/varying-link-bw/word-count/logs/
+use-cases/varying-networking-conditions/varying-packet-loss/military-coordination/logs/

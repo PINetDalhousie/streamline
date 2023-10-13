@@ -1,0 +1,5 @@
+# consumer configuration file
+---
+  consumerPath : use-cases/varying-networking-conditions/varying-packet-loss/military-coordination/military-consumerSingle.py
+  consumerInstances : 1
+...

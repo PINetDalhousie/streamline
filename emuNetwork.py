@@ -43,7 +43,15 @@ class CustomTopo(Topo):
 			if 'latency' in data:
 				linkDelay = str(data['latency'])+'ms'
 
-			self.addLink(source, target, data['sport'], data['dport'], bw=linkBandwidth, delay=linkDelay)
+			# packet loss implementation
+			linkLoss = 0
+			if 'loss' in data:
+				if int(data['loss']) > 100:
+					print("ERROR: Packet loss should be less than 100% and an integer value.")
+					sys.exit(1)
+				linkLoss = int(data['loss'])   #packet loss must be an integer from 0 to 100
+
+			self.addLink(source, target, data['sport'], data['dport'], bw=linkBandwidth, delay=linkDelay,loss=linkLoss)
 
 
 

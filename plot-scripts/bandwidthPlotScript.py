@@ -189,7 +189,6 @@ def overheadCheckPlot(portFlag, msgSize):
         newBandwidthSum = [x / 1000000 for x in bandwidthSum]
         newBandwidthSumLeaderLess = [x / 1000000 for x in bandwidthSumLeaderLess]
         aggregatedPlot(portFlag,timeList, newBandwidthSum, newBandwidthSumLeaderLess, "Throughput (Mbytes/sec)", msgSize, countX)    
-    
 
     if portFlag=="bytes":
         plt.savefig(logDirectory+args.portType+" aggregated rx bytes("+str(args.switches)+" nodes "+str(args.nTopics)+" topics "+str(args.replication)+" replication)",bbox_inches="tight")
@@ -236,7 +235,7 @@ def plotIndividualPortBandwidth():
     for ports in portParams:
         portId, switchId = parseInput(ports)
 #         if switchId not in leaderReplicaList:                #to skip plotting the leader replicas
-#         print("S"+str(switchId)+"-P"+str(portId))
+        # print("S"+str(switchId)+"-P"+str(portId))
         drawIndividualBandwidth(portId, switchId, "bytes")
     
     clearExistingPlot()
