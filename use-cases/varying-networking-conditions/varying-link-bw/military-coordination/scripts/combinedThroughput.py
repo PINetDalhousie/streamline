@@ -1,4 +1,4 @@
-# command: sudo python3 use-cases/varying-networking-conditions/varying-link-bw/military-coordination/scripts/combinedThroughput.py --log-dir use-cases/varying-networking-conditions/varying-link-bw/military-coordination/logs/scenario-4
+# command: sudo python3 use-cases/varying-networking-conditions/varying-link-bw/military-coordination/scripts/combinedThroughput.py --log-dir use-cases/varying-networking-conditions/varying-link-bw/military-coordination/logs --scenario-list 11,12,13
 #!/usr/bin/python3
 
 import os
@@ -93,10 +93,10 @@ def aggregatedPlot(portFlag,x,y, yLeaderLess, yLabel, msgSize, countX,
     plt.ylabel(yLabel, fontsize=22, fontweight='bold', labelpad=10)
     
     plt.xlim([0,400])
-    plt.ylim([0, 10])
+    # plt.ylim([0, 10])
     
     plt.xticks(np.arange(0,401, step=100))
-    plt.yticks(np.arange(0,10.1, step=2))
+    # plt.yticks(np.arange(0,10.1, step=2))
     
     ax = plt.gca()
     
@@ -198,25 +198,22 @@ parser.add_argument('--ntopics', dest='nTopics', type=int, default=2, help='Numb
 parser.add_argument('--replication', dest='replication', type=int, default=10, help='Replication factor')
 parser.add_argument('--nzk', dest='nZk', type=int, default=0, help='Kafka/Kraft')
 parser.add_argument('--log-dir', dest='logDir', type=str, default='use-cases/varying-networking-conditions/varying-link-bw/military-coordination/logs/scenario-1', help='Producer log directory')
+parser.add_argument('--scenario-list', dest='scenarioStr', type=str, help='Comma separated list of scenarios')
+parser.add_argument('--link-bw', dest='linkBW', type=int, default=10, help='Comma separated list of scenarios')
 
 args = parser.parse_args()
 
-logDirectory = args.logDir + "/bandwidth/"
+logDirectory = args.logDir
+scenarioStr = args.scenarioStr
+scenarioList = scenarioStr.split(',')
 
 clearExistingPlot()
-plotAggregatedBandwidth(scenario=4, label='20Mbps', color='blue', ls='solid', lw=3.0, cap=9.0)      #for aggregated plot    
-print("Aggregated plot created for link bandwidth 20Mbps node scenario (scenario 4).")
+colorLst = ['r','g','b', 'y','k','m']
+for index, item in enumerate(scenarioList):
+    logDirectory = args.logDir + "/" + str(args.linkBW) +"Mbps/scenario-"+item + "msgPs/bandwidth/"
+    # ls can be solid or dashed 
+    plotAggregatedBandwidth(scenario=int(item), label=item+"msg/s", color=colorLst[index], ls='solid', lw=3.0, cap=9.0)      #for aggregated plot    
 
-logDirectory = args.logDir.replace("scenario-4", "scenario-5")
-logDirectory = logDirectory + "/bandwidth/"
-plotAggregatedBandwidth(scenario=5, label='1000Mbps', color='green', ls='dashed', lw=3.0, cap=9.0)      #for aggregated plot    
-print("Aggregated plot created for link bandwidth 1000Mbps node scenario (scenario 4).")   
-
-logDirectory = args.logDir.replace("scenario-4", "scenario-6")
-logDirectory = logDirectory + "/bandwidth/"
-plotAggregatedBandwidth(scenario=6, label='10Mbps', color='red', ls='dashed', lw=3.0, cap=9.0)      #for aggregated plot    
-print("Aggregated plot created for link bandwidth 10Mbps node scenario (scenario 6).")
-
-print("Aggregated plot for all created.") 
-
-plt.savefig("use-cases/varying-networking-conditions/varying-link-bw/military-coordination/plots/combinedThroughput", bbox_inches="tight")
+# plt.savefig("use-cases/varying-networking-conditions/varying-link-bw/military-coordination/plots/10Mbps-combinedThroughput", bbox_inches="tight")
+plotDir= args.logDir.replace('logs','plots')+"/"+ str(args.linkBW)+"Mbps-combinedThroughput"
+plt.savefig(plotDir, bbox_inches="tight")
