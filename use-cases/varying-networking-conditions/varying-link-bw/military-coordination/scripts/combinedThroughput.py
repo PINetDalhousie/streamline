@@ -1,4 +1,4 @@
-# command: sudo python3 use-cases/varying-networking-conditions/varying-link-bw/military-coordination/scripts/combinedThroughput.py --log-dir use-cases/varying-networking-conditions/varying-link-bw/military-coordination/logs --scenario-list 11,12,13
+# command: sudo python3 use-cases/varying-networking-conditions/varying-link-bw/military-coordination/scripts/combinedThroughput.py --log-dir use-cases/varying-networking-conditions/varying-link-bw/military-coordination/logs --link-bw 20 --scenario-list 300,500,600
 #!/usr/bin/python3
 
 import os
@@ -212,7 +212,7 @@ colorLst = ['r','g','b', 'y','k','m']
 for index, item in enumerate(scenarioList):
     logDirectory = args.logDir + "/" + str(args.linkBW) +"Mbps/scenario-"+item + "msgPs/bandwidth/"
     # ls can be solid or dashed 
-    plotAggregatedBandwidth(scenario=int(item), label=item+"msg/s", color=colorLst[index], ls='solid', lw=3.0, cap=9.0)      #for aggregated plot    
+    plotAggregatedBandwidth(scenario=int(item), label=item+" msg/s", color=colorLst[index], ls='solid', lw=3.0, cap=9.0)      #for aggregated plot    
 
 # plt.savefig("use-cases/varying-networking-conditions/varying-link-bw/military-coordination/plots/10Mbps-combinedThroughput", bbox_inches="tight")
 plotDir= args.logDir.replace('logs','plots')+"/"+ str(args.linkBW)+"Mbps-combinedThroughput"
