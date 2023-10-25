@@ -34,7 +34,7 @@ class CustomTopo(Topo):
 				print("ERROR: Wrong node identifier.")
 				sys.exit(1)
 
-		for source, target, data in inputTopo.edges(data=True):
+		for source, target, data in inputTopo.edges(data=True):		
 			linkBandwidth = 1000
 			if 'bandwidth' in data:
 				linkBandwidth = int(data['bandwidth'])
@@ -50,7 +50,7 @@ class CustomTopo(Topo):
 					print("ERROR: Packet loss should be less than 100% and an integer value.")
 					sys.exit(1)
 				linkLoss = int(data['loss'])   #packet loss must be an integer from 0 to 100
-
+			
 			self.addLink(source, target, data['sport'], data['dport'], bw=linkBandwidth, delay=linkDelay,loss=linkLoss)
 
 

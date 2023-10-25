@@ -132,9 +132,9 @@ if __name__ == '__main__':
 	#emuNetwork.configureNetwork(args.topo)
 	time.sleep(1)
 
-	# print("Testing network connectivity")
-	# net.pingAll()
-	# print("Finished network connectivity test")
+	print("Testing network connectivity")
+	net.pingAll()
+	print("Finished network connectivity test")
     		
 	#Start monitoring tasks
 	popens[pID] = subprocess.Popen("sudo python3 bandwidth-monitor.py "+str(nSwitches)+" &", shell=True)
