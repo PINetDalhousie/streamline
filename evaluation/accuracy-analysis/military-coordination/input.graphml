@@ -27,7 +27,7 @@
     <data key="topicCfg">evaluation/accuracy-analysis/military-coordination/yamlConfig/topicConfiguration.yaml</data>
 
     <node id="s1"/>
-    <node id="s2"/>
+    <!-- <node id="s2"/> -->
 
     <node id="h1">
       <data key="zk">1</data>
@@ -83,7 +83,7 @@
     </edge>    
 
 
-    <edge source="s2" target="h1">
+    <!-- <edge source="s2" target="h1">
     <data key="st">1</data>
     <data key="dt">2</data>
   </edge>
@@ -98,13 +98,13 @@
     <edge source="s2" target="h4">
 	<data key="st">4</data>
 	<data key="dt">2</data>
-    </edge>  
+    </edge>   -->
     	
-    
+<!--     
     <edge source="s2" target="s1">
 	<data key="st">5</data>
 	<data key="dt">5</data>
-    </edge>
+    </edge> -->
 	
   </graph>
 </graphml>
