@@ -31,3 +31,5 @@ use-cases/varying-networking-conditions/varying-link-bw/word-count/MFSTDataDir/
 use-cases/varying-networking-conditions/varying-link-bw/word-count/logs/
 use-cases/varying-networking-conditions/varying-packet-loss/military-coordination/logs/
 evaluation/accuracy-analysis/military-coordination/logs
+use-cases/varying-networking-conditions/varying-link-bw/military-coordination/scripts/3d-plot.py
+use-cases/varying-networking-conditions/varying-link-bw/military-coordination/plots/3d-plot.png
