@@ -44,6 +44,12 @@ def processMessageInput():
     
     return msgSize
 
+# plot input data rate in one horizontal line for all/individual host ports
+def plotInputDataRate(msgSize, mRate, countX, switches):
+    dataRate = msgSize * mRate * switches
+    dataRateList = [dataRate] * countX
+    return dataRateList
+
 #to get bandwidth list for a specific port in a specific switch
 def getStatsValue(switch,portNumber, portFlag):
     count=0
@@ -83,7 +89,41 @@ def getStatsValue(switch,portNumber, portFlag):
                 count+=1
 
     return bandwidth,count, maxBandwidth
-         
+
+#drawing single plot for a single flag of each port for one switch           
+def drawPlot(switchNo,portNo,portFlag,x,y,yLabel,occurrence): 
+    global inputBarDraw
+    # print("Switch no: "+str(switchNo))
+    # print("Port no: "+str(portNo))
+    if inputBarDraw == 0:
+        msgSize = processMessageInput()
+        dataRateList = plotInputDataRate(msgSize, args.mRate, occurrence, 1)
+        dataRateList = [x / 1000000 for x in dataRateList]
+
+#         plt.figure(figsize=(3,3))
+        if portFlag != "rx pkts" or portFlag != "tx pkts":
+            plt.plot(x,dataRateList,label = "input")
+            inputBarDraw = 1
+    plt.plot(x,y, label = "S-" +str(switchNo)+" P-"+str(portNo))
+    plt.xlabel('Time (s)', fontproperties=font)
+    if portFlag == "rx pkts" or portFlag == "tx pkts":
+        plt.ylabel('Throughput (pkts/s)', fontproperties=font)
+    else:
+        plt.ylabel('Throughput (Mbytes/s)', fontproperties=font)
+
+
+    plt.xticks(fontproperties=font)
+    plt.yticks(fontproperties=font)
+
+#     plt.ylim([0,3.5])           # to limit the Y-axis value
+
+    if portFlag=="bytes":
+        plt.title(args.portType+" rx bytes("+str(args.switches)+" nodes "+str(args.nTopics)+" topics "+str(args.replication)+" replication)")
+    else:
+        plt.title(args.portType+" " + portFlag+"("+str(args.switches)+" nodes "+str(args.nTopics)+" topics "+str(args.replication)+" replication)") 
+
+    plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', fontsize='xx-small')
+
 # aggregated plot for all switches
 def aggregatedPlot(portFlag,x,y, yLeaderLess, yLabel, msgSize, countX, 
 		label, color, ls, lw):      
@@ -177,7 +217,54 @@ def parseInput(portSwitchId):
     portId = portParams[1].split('P')[1]
 
     return int(portId), int(switchId)
+
+def drawIndividualBandwidth(portId, switchId, portFlag):
+    bandwidth, occurrence, maxBandwidth = getStatsValue(switchId,portId, portFlag)        # Here portId=1 is the fixed entry port of hosts
+    timeList = list(range(0,occurrence*interval,interval))
+    if portFlag=="rx pkts" or portFlag=="tx pkts":
+        drawPlot(switchId,portId,portFlag,timeList, bandwidth, "Bandwidth (pkts/sec)", occurrence)
+    elif portFlag=="bytes":
+        newBandwidth = [x / 1000000 for x in bandwidth]
+        drawPlot(switchId,portId,portFlag,timeList, newBandwidth, "Received Bandwidth (Mbytes/s)", occurrence)
+    else:    
+        newBandwidth = [x / 1000000 for x in bandwidth]
+        drawPlot(switchId,portId,portFlag,timeList, newBandwidth, "Transmitted Bandwidth (Mbytes/s)", occurrence)
+        
     
+    if portFlag=="bytes":
+        plt.savefig(logDirectory+args.portType+" rx bytes("+str(args.switches)+" nodes "+str(args.nTopics)+" topics "+str(args.replication)+" replication).png",bbox_inches="tight")
+    else:    
+        plt.savefig(logDirectory+args.portType+" "+portFlag+"("+str(args.switches)+" nodes "+str(args.nTopics)+" topics "+str(args.replication)+" replication).png",bbox_inches="tight") 
+        
+
+def plotIndividualPortBandwidth():
+    portParams = args.switchPorts.split(',')
+    for ports in portParams:
+        portId, switchId = parseInput(ports)
+#         if switchId not in leaderReplicaList:                #to skip plotting the leader replicas
+        # print("S"+str(switchId)+"-P"+str(portId))
+        drawIndividualBandwidth(portId, switchId, "bytes")
+    
+    clearExistingPlot()
+    
+    for ports in portParams:
+        portId, switchId = parseInput(ports)
+        drawIndividualBandwidth(portId, switchId, "tx bytes")
+
+    clearExistingPlot()
+            
+    for ports in portParams:
+        portId, switchId = parseInput(ports)
+        drawIndividualBandwidth(portId, switchId, "rx pkts")
+        
+    clearExistingPlot()
+            
+    for ports in portParams:
+        portId, switchId = parseInput(ports)
+        drawIndividualBandwidth(portId, switchId, "tx pkts")        
+        
+    clearExistingPlot()
+
 # if __name__ == '__main__': 
 parser = argparse.ArgumentParser(description='Script for plotting individual port log.')
 parser.add_argument('--number-of-switches', dest='switches', type=int, default=10,
@@ -198,6 +285,9 @@ args = parser.parse_args()
 logDirectory = args.logDir
 scenarioStr = args.scenarioStr
 scenarioList = scenarioStr.split(',')
+
+plotIndividualPortBandwidth()           #for individual entry port plots
+print("Individual "+args.portType+" bandwidth consumption plot created")
 
 clearExistingPlot()
 colorLst = ['r','g','b', 'y','k','m']

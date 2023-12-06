@@ -2,7 +2,7 @@
 
 Tool for fast prototyping of distributed stream processing applications.
 
-The tool was tested on Ubuntu 20.04.4 and is based on Python 3.8.10, Kafka 2.13-2.8.0, PySpark 3.2.1, Flink 1.17.1 and MySQL 8.0.30.
+The tool was tested on Ubuntu 18.04, 20.04.4, and 22.04. It is based on Python 3.8.10, Kafka 2.13-2.8.0, PySpark 3.2.1, Flink 1.17.1 and MySQL 8.0.30.
 
 ## Getting started
 

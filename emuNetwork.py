@@ -39,7 +39,7 @@ class CustomTopo(Topo):
 			if 'bandwidth' in data:
 				linkBandwidth = int(data['bandwidth'])
 
-			linkDelay = "1s"
+			linkDelay = "1ms"
 			if 'latency' in data:
 				linkDelay = str(data['latency'])+'ms'
 
