@@ -27,7 +27,7 @@ def configureLogDir(nSwitches, nTopics, captureAll):
 def cleanLogs():
 	os.system("sudo rm -rf logs/kafka/")
 	os.system("sudo rm -rf logs/output/")
-	os.system("sudo rm -rf kafka/logs/")    
+	os.system("sudo rm -rf kafka/logs/")  
 
 def logMininetProcesses(popens, logFilePath):
 	bandwidthLog = open(logFilePath, "a")

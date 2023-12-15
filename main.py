@@ -57,12 +57,16 @@ def killSubprocs(brokerPlace, zkPlace, prodDetailsList, streamProcDetailsList, c
 	# killing the topic duplicate python script
 	os.system("sudo pkill -9 -f topicDuplicate.py") 
 
+	# killing existing spark instances
+	# os.system("sudo pkill -f 'spark'")
+
 if __name__ == '__main__': 
 	parser = argparse.ArgumentParser(description='Emulate data sync in mission critical networks.')
 	parser.add_argument('topo', type=str, help='Network topology')
 	parser.add_argument('--time', dest='duration', type=int, default=10, help='Duration of the simulation (in seconds)')
 	parser.add_argument('--capture-all', dest='captureAll', action='store_true', help='Capture the traffic of all the hosts')
 	parser.add_argument('--only-spark', dest='onlySpark', type=int, default=0, help='To run Spark application only')
+	parser.add_argument('--spark-cluster', dest='sparkCluster', type=int, default=0, help='To run Spark standalone cluster')
 	  
 	args = parser.parse_args()
 	# print(args)

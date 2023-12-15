@@ -63,7 +63,7 @@
 
     <edge source="s1" target="h2">
       <data key="bw">1000</data>
-      <data key="lat">100</data>
+      <data key="lat">150</data>
       <data key="st">2</data>
       <data key="dt">1</data>
     </edge>
