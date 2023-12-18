@@ -121,7 +121,7 @@ def comparePkt(prodPktList, consPktList):
     # Convert timedelta object to Milliseconds
     avgProcessingTime = diff.total_seconds() * 1000
     # print("No of processed packets: "+str(consumedMsg))
-    print("Avg. end-to-end latency per packet(in ms): "+str(avgProcessingTime))
+    print("Avg. total end-to-end latency per packet(in ms): "+str(avgProcessingTime))
 
 prodLogDir = sys.argv[1]
 consLogFile = sys.argv[2]

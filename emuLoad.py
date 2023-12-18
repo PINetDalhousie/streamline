@@ -188,11 +188,13 @@ def spawnSPEClients(net, streamProcDetailsList):
 		speID = "h"+speNode
 		node = netNodes[speID]
 
-		# node.popen("sudo spark/pyspark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1 "+sparkApp\
-		# 			+" "+str(node.name)+" "+sparkOutputTo+" &", shell=True)
 		if speType == "Spark":
 			node.popen("sudo spark/pyspark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1 "+speApp\
 					+" &", shell=True)
+			
+			# Topic duplicate experiment command for network traffic analysis under reproducibility use-case
+			# node.popen("sudo spark/pyspark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1\
+			# 		use-cases/reproducibility/networkTrafficAnalysis/topicDuplicate.py &", shell=True)
 		elif speType == "Flink":
 			if not(os.path.exists("pyflink/bin")): 
 				print("pyflink is not installed in the pyflink directory, please run use_pyflink.py to install")
