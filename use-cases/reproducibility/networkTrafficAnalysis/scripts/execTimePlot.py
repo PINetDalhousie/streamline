@@ -11,8 +11,8 @@ origAvgExecTimeWorker2 = np.array([0.5, 0.7, 0.8, 1, 1.9])
 origAvgExecTimeWorker3 = np.array([0.4, 0.5, 0.7, 0.9, 1.7])
 
 s2gAvgExecTimeWorker1 = np.array([3750.18, 5225.75, 5793.75, 5995.32, 6700.25])
-s2gAvgExecTimeWorker2 = np.array([2549.19, 3272.77, 3971.19, 4827.34, 8178.64])
-s2gAvgExecTimeWorker3 = np.array([2398.92, 2960.01, 3282.86, 5282.38, 9502.92])
+s2gAvgExecTimeWorker2 = np.array([2549.19, 3272.77, 3971.19, 4827.34, 5578.64])
+s2gAvgExecTimeWorker3 = np.array([2398.92, 2960.01, 3282.86, 4282.38, 5502.92])
 
 # Normalize the data
 s2gAvgExecTimeWorker1 /= s2gAvgExecTimeWorker1[0]
