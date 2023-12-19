@@ -180,21 +180,27 @@ def spawnSPEClients(net, streamProcDetailsList):
 		speNode = spe["nodeId"]
 		speApp = spe["applicationPath"]
 		speType = spe["streamProcType"]
+		speCluster = spe["cluster"]
 		print("spe node: "+speNode)
 		print("spe App: "+speApp)
 		print("spe: ", speType)
+		print("Cluster: "+str(speCluster))
 		print("*************************")
 
 		speID = "h"+speNode
 		node = netNodes[speID]
 
 		if speType == "Spark":
-			node.popen("sudo spark/pyspark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1 "+speApp\
-					+" &", shell=True)
-			
-			# Topic duplicate experiment command for network traffic analysis under reproducibility use-case
-			# node.popen("sudo spark/pyspark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1\
-			# 		use-cases/reproducibility/networkTrafficAnalysis/topicDuplicate.py &", shell=True)
+			# Spark cluster support
+			if str(speCluster) == "True":
+				spawnSPEClusterClients(node, spe)
+			else:
+				node.popen("sudo spark/pyspark/pyspark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1 "+speApp\
+						+" &", shell=True)
+				
+				# Topic duplicate experiment command for network traffic analysis under reproducibility use-case
+				# node.popen("sudo spark/pyspark/pyspark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1\
+				# 		use-cases/reproducibility/networkTrafficAnalysis/topicDuplicate.py &", shell=True)
 		elif speType == "Flink":
 			if not(os.path.exists("pyflink/bin")): 
 				print("pyflink is not installed in the pyflink directory, please run use_pyflink.py to install")
@@ -203,38 +209,39 @@ def spawnSPEClients(net, streamProcDetailsList):
 				node.popen("sudo env \"PYTHONPATH=$PYTHONPATH:.\" pyflink/bin/flink run --target local --python ../"+ speApp + " --jarfile ../dependency/jars/flink-sql-connector-kafka-1.17.1.jar" + " &", shell=True, cwd="pyflink")
 		#more elif's for more spes 
 
-def spawnSPEClusterClients(net, streamProcDetailsList):
+def spawnSPEClusterClients(node, spe):
 	print('Initializing SPE cluster clients')
-	netNodes = {}
-	for node in net.hosts:
-		netNodes[node.name] = node
+	speNode = spe["nodeId"]		
+	speApp = spe["applicationPath"]
+	nSPEWorkerInstances = spe["nSPEWorkerInstances"]
+	nWorkerCores = spe["nWorkerCores"]
+	workerMemory = spe["workerMemory"]
+	print("Master node: ",speNode)
+	print("nSPEWorkerInstances: ",nSPEWorkerInstances)
+	print("nWorkerCores: ", nWorkerCores)
+	print("workerMemory: ", workerMemory)
+	print("*************************")
 
-	for spe in streamProcDetailsList:
-		time.sleep(30)
-		
-		speNode = spe["nodeId"]
-		speApp = spe["applicationPath"]
-		speType = spe["streamProcType"]
-		print("spe node: "+speNode)
-		print("spe App: "+speApp)
-		print("spe: "+speType+" cluster")
-		print("*************************")
+	# Update the spark-env.sh file
+	node.popen("sudo cp spark/spark-3.2.1/conf/spark-env.sh.template spark/spark-3.2.1/conf/spark-env.sh", shell=True)
+	node.popen("sudo chmod +w spark/spark-3.2.1/conf/spark-env.sh", shell=True)
+	node.popen("sudo echo \"\" >> spark/spark-3.2.1/conf/spark-env.sh", shell=True)
+	node.popen(f"sudo echo \"export SPARK_MASTER_HOST=10.0.0.{speNode}\" >> spark/spark-3.2.1/conf/spark-env.sh", shell=True)
+	if nSPEWorkerInstances != "":
+		node.popen(f"sudo echo \"export SPARK_WORKER_INSTANCES={nSPEWorkerInstances}\" >> spark/spark-3.2.1/conf/spark-env.sh", shell=True)
+	if nWorkerCores != "":
+		node.popen(f"sudo echo \"export SPARK_WORKER_CORES={nWorkerCores}\" >> spark/spark-3.2.1/conf/spark-env.sh", shell=True)
+	if workerMemory != "":
+		node.popen(f"sudo echo \"export SPARK_WORKER_MEMORY={workerMemory}\" >> spark/spark-3.2.1/conf/spark-env.sh", shell=True)
 
-		speID = "h"+speNode
-		node = netNodes[speID]
-
-		if speType == "Spark":
-			# initiate the master and worker nodes
-			node.popen("sudo spark/spark-3.2.1/sbin/start-master.sh", shell=True)
-			node.popen("sudo spark/spark-3.2.1/sbin/start-worker.sh spark://10.0.0."+speNode+":7077", shell=True)
-			
-			# run the application
-			node.popen("sudo spark/pyspark/bin/spark-submit --master spark://10.0.0."+speNode+":7077\
-			  --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1 "+speApp\
-				+" &", shell=True)
-		else:
-			print("Cluster support not supported except Spark. Exiting...")
-			sys.exit(1)
+	# initiate the master and worker nodes
+	node.popen("sudo spark/spark-3.2.1/sbin/start-master.sh", shell=True)
+	node.popen("sudo spark/spark-3.2.1/sbin/start-worker.sh spark://10.0.0."+speNode+":7077", shell=True)
+	
+	# run the application
+	node.popen("sudo spark/pyspark/pyspark/bin/spark-submit --master spark://10.0.0."+speNode+":7077\
+		--packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1 "+speApp\
+		+" &", shell=True)
 			
 def spawnKafkaDataStoreConnector(net, prodDetailsList, storePath):
 	netNodes = {}
@@ -305,10 +312,10 @@ def runLoad(net, args, topicPlace, prodDetailsList, consDetailsList, streamProcD
 
 	if args.onlyKafka == 0:
 		# starting stream processing clients
-		if args.sparkCluster == 1:
-			spawnSPEClusterClients(net, streamProcDetailsList)
-		else:
-			spawnSPEClients(net, streamProcDetailsList)
+		# if args.sparkCluster == 1:
+		# 	spawnSPEClusterClients(net, streamProcDetailsList)
+		# else:
+		spawnSPEClients(net, streamProcDetailsList)
 		time.sleep(30)
 		print("SPE Clients created")
 

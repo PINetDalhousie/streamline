@@ -63,7 +63,6 @@ if __name__ == '__main__':
 	parser.add_argument('--time', dest='duration', type=int, default=10, help='Duration of the simulation (in seconds)')
 	parser.add_argument('--capture-all', dest='captureAll', action='store_true', help='Capture the traffic of all the hosts')
 	parser.add_argument('--only-spark', dest='onlySpark', type=int, default=0, help='To run Spark application only')
-	parser.add_argument('--spark-cluster', dest='sparkCluster', type=int, default=0, help='To run Spark standalone cluster')
 	  
 	args = parser.parse_args()
 	# print(args)

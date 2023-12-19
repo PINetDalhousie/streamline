@@ -75,3 +75,4 @@ def cleanStreamProcDependency():
 def cleanStreamProcClusterState():
 	# killing existing spark instances
 	os.system("sudo pkill -f 'spark'")
+	os.system("sudo rm spark/spark-3.2.1/conf/spark-env.sh")

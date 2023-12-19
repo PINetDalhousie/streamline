@@ -1,4 +1,8 @@
 # Stream processing engine configuration
 ---
   app : use-cases/reproducibility/networkTrafficAnalysis/clustered-spark-port-statistics.py
+  cluster : True
+  nSPEWorkerInstances : 3
+  nWorkerCores : 1
+  workerMemory : 4g
 ...
