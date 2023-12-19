@@ -39,7 +39,7 @@ evaluation/accuracy-analysis/military-coordination/logs
 # use-cases/varying-networking-conditions/varying-link-bw/military-coordination/plots/3d-plot.png
 evaluation/accuracy-analysis/cpu-intensive-app/
 spark/spark-3.2.1/
-# spark/pyspark/
+spark/pyspark/
 use-cases/reproducibility/networkTrafficAnalysis/logs/
 use-cases/reproducibility/networkTrafficAnalysis/scripts/execTimePlot.py
 use-cases/reproducibility/networkTrafficAnalysis/plots/

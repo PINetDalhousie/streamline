@@ -9,12 +9,12 @@ Follow the steps below to install Apache Spark 3.2.1:
 
 2. Extract the downloaded package using the following command:
     ```shell
-    tar xvf spark-3.2.1-bin-hadoop3.2.tgz
+    tar xvf /path/to/streamline/spark/spark-3.2.1-bin-hadoop3.2.tgz
     ```
 
 3. Rename the extracted folder using the following command:
     ```shell
-    mv spark-3.2.1-bin-hadoop3.2 spark-3.2.1
+    mv /path/to/streamline/spark/spark-3.2.1-bin-hadoop3.2 /path/to/streamline/spark/spark-3.2.1
     ```
 
 4. Update the `/root/.bashrc` file by adding the following lines:
