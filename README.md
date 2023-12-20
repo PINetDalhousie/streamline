@@ -29,9 +29,8 @@ The tool was tested on Ubuntu 18.04, 20.04.4, and 22.04. It is based on Python 3
 
   Most dependencies can be installed using `apt install` and `pip3 install`:
   
-  ```bash
   <!-- $ sudo wget -P kafka https://archive.apache.org/dist/kafka/2.8.2/kafka_2.13-2.8.2.tgz && sudo tar -xvf kafka/kafka_2.13-2.8.2.tgz -C kafka/ && sudo cp -R kafka/kafka_2.13-2.8.2/* kafka/ && sudo rm kafka/kafka_2.13-2.8.2.tgz && sudo rm -rf kafka/kafka_2.13-2.8.2 -->
-
+  ```bash
   $ sudo apt install python3-pip mininet default-jdk xterm netcat
   
   $ sudo pip3 install mininet networkx kafka-python matplotlib python-snappy lz4 seaborn pyyaml seaborn
@@ -65,4 +64,8 @@ The tool was tested on Ubuntu 18.04, 20.04.4, and 22.04. It is based on Python 3
 
   ```sudo python3 main.py use-cases/reproducibility/input.graphml --only-spark 1```
 
-  6) Explore the streamline supported configuration parameters in ```documentation/config-parameters.pdf```. Setup parameters as you need and quickly test your prototype in a distributed emulated environment.
+  6) Execute stream processing tasks using a cluster of workers, leveraging the power of Spark standalone cluster(currently, only Spark is supported). The following example demonstrates how to run an application with three worker instances: 
+
+  ```sudo python3 main.py use-cases/reproducibility/networkTrafficAnalysis/input-cluster.graphml --time 300```
+  
+  7) Explore the streamline supported configuration parameters in ```documentation/config-parameters.pdf```. Setup parameters as you need and quickly test your prototype in a distributed emulated environment.
