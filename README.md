@@ -30,6 +30,8 @@ The tool was tested on Ubuntu 18.04, 20.04.4, and 22.04. It is based on Python 3
   Most dependencies can be installed using `apt install` and `pip3 install`:
   
   ```bash
+  <!-- $ sudo wget -P kafka https://archive.apache.org/dist/kafka/2.8.2/kafka_2.13-2.8.2.tgz && sudo tar -xvf kafka/kafka_2.13-2.8.2.tgz -C kafka/ && sudo cp -R kafka/kafka_2.13-2.8.2/* kafka/ && sudo rm kafka/kafka_2.13-2.8.2.tgz && sudo rm -rf kafka/kafka_2.13-2.8.2 -->
+
   $ sudo apt install python3-pip mininet default-jdk xterm netcat
   
   $ sudo pip3 install mininet networkx kafka-python matplotlib python-snappy lz4 seaborn pyyaml seaborn
