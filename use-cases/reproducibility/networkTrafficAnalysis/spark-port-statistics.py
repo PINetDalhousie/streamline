@@ -71,7 +71,7 @@ try:
         .outputMode("update")\
         .option("kafka.bootstrap.servers", kafka_bootstrap_servers) \
         .option("topic", sparkOutputTo) \
-        .option("checkpointLocation", "logs/output/wordcount_checkpoint_final") \
+        .option("checkpointLocation", "logs/output/networkTrafficAnalysis_checkpoint_final") \
         .start()
 
         while query.isActive:

@@ -70,37 +70,93 @@ try:
 
     # This is our query
     # We get the types of ships at each destination each minute, along with the number and names of ships
-    query = vessel\
-        .withWatermark("timestamp", "1 second") \
-        .groupBy(window("timestamp", "1 second"), "destination", "shiptype")\
-        .agg(approx_count_distinct("mmsi").alias("numberOfShips"),\
-        collect_set("mmsi").alias("shipIDs"))
+    query = vessel.groupBy(window("timestamp", "1 minute"), "destination", "shiptype")\
+            .agg(approx_count_distinct("mmsi").alias("numberOfShips"),\
+            collect_set("mmsi").alias("shipIDs"))
 
     logging.info("Query Streaming: "+str(query.isStreaming))
     logging.info("Query Schema: "+str(query.printSchema))
 
-    # to produce the message in Kafka topic
-    # to produce the message in Kafka topic
-    query = query.select( concat( \
-        lit(' Start time: '), date_format('window.start', 'yyyy-MM-dd HH:mm:ss'),\
-        lit(' End time: '), date_format('window.end', 'yyyy-MM-dd HH:mm:ss'),\
-        lit(' Destination: '), 'destination',\
-        lit(' Shiptype: '), 'shiptype',\
-        lit(' Number of ships: '), 'numberOfShips',\
-        lit(' Ship IDs: '), concat_ws(", ", 'shipIDs')\
-        ).alias('value') )
 
-    # Sending the dataframe to the kafka topic
-    kafkaNode2 = "10.0.0.2:9092"
-    output = query.writeStream \
-        .format("kafka") \
-        .outputMode("append")\
-        .option("kafka.bootstrap.servers", kafkaNode2) \
-        .option("topic", sparkOutputTo) \
-        .option("checkpointLocation", "logs/output/maritimeMonitoring_checkpoint") \
-        .start()\
-        .awaitTermination()
+    # Here we get the dataframe columns, which we will use in creating our json string
+    columns = []
+
+    for column in query.columns:
+        columns.append(column)
+
+    # Convert the result of our query to json format
+    query = query.select( to_json( struct("*")).alias("value") )
     
+    #Here we create our required json schema
+    def construct_json_string(columns):
+
+        jsonString = '{"schema":{"type":"struct","optional":false,"version":1,"fields":['
+
+        i = 0
+
+        for column in columns:
+
+            jsonString += '{"field":"' + column + '","type":"string","optional":true}'
+
+            if i < len(columns) - 1:
+                
+                jsonString += ','
+                i+=1
+        
+        jsonString += ']},"payload":'
+
+        return jsonString
+
+    # Getting our json schema string
+    jsonString = construct_json_string(columns)
+    
+    i = 0
+    kafkaNode2 = "10.0.0.2:9092"
+    # Here we send each of our dataframe row to the output kafka topic. Each row is first formatted as follows
+    #
+    # Schema followed by the row data
+    #
+    # Each formatted row is then sent to the kafka topic
+    class RowPrinter:
+
+        # This part is just left as the default
+        def open(self, partition_id, epoch_id):
+            return True
+
+        # This is where we format and send each row to the kafka topic
+        def process(self, row):
+            global i
+            global jsonString
+
+            if i == 0:
+                producer = KafkaProducer(bootstrap_servers=[kafkaNode2])#,\
+                        # value_serializer=lambda x:\
+                        # dumps(x).encode('utf-8'))
+                i+= 10
+                jsonString += str(row[0]) + "}"
+                jsonByte = bytes(jsonString, 'utf-8')
+
+                producer.send(sparkOutputTo, jsonByte)
+        
+        # This part is also left as the default
+        def close(self, error):
+            print("Closed with error: %s" % str(error))
+
+    # Sending the dataframe to the kafka topic row by row, in the desired json format
+    # Our choice of output mode is worth elaborating
+    # We have 3 choices for output mode: complete, update and append. Complete does not work with this query
+    # as we send data row by row, and there are no streaming aggregations on the row. 
+    # Update and append both work. However, we chose append as it aligns well with our logic, in that we want
+    # to send data row by row as we generate each new transformed row. Also, we wanted to avoid any possible issues
+    # by using update, such as a row repeating in part of our output, but not being sent due to matching a previous
+    # row
+    output = query\
+            .writeStream\
+            .outputMode("complete")\
+            .foreach(RowPrinter())\
+            .start()\
+            .awaitTermination()
+
 except Exception as e:
 	logging.error(e)
 	sys.exit(1)

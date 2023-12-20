@@ -3,12 +3,12 @@ This application uses AIS data to determine the types of ships heading to each d
 
 Our aim is to use AIS data to get insights that can be useful for maritime monitoring. We wanted to see if Kafka and Spark Structured Streaming can be used to get such insights, especially in real-time. Hence, we developed this application.
 
-We start out by feeding real-time AIS data from a JSON file to a Kafka topic. Next, we have the application read this data from the Kafka topic using Spark Structured Streaming. Using this data, the application determines the types of ships heading towards each destination in every minute, along with the names and numbers of such ships. Finally, the application then gets the results of this query, changes it into our required JSON format, and feeds this result to a Kafka topic. Specifying Kafka-data store connector configurations, query result can also be inserted from Kafka topic tp external datastore table. We test our data-store connection and data ingestion using MySQL.
+We start out by feeding real-time AIS data from a JSON file to a Kafka topic. Next, we have the application read this data from the Kafka topic using Spark Structured Streaming. Using this data, the application determines the types of ships heading towards each destination in every minute, along with the names and numbers of such ships. Finally, the application then gets the results of this query, changes it into our required JSON format, and feeds this result to a Kafka topic. Specifying Kafka-data store connector configurations, query result can also be inserted from Kafka topic to external datastore table. We test our data-store connection and data ingestion using MySQL.
 
 ## Dataset
 Our dataset is a collection of records obtained by collecting live AIS data. This is live data broadcast from ships.
 
-The ships send messages of various types containing various types of information. For example, message type 3 contains latitutde and longitude information, message type 5 contains ship names, destinations etc.
+The ships send messages of various types, e.g., message type 3 contains latitutde and longitude information, message type 5 contains ship names, destinations etc.
 
 For our application, we used messages of type 5, which contained information including ship types, ship names, and destinations.
 
