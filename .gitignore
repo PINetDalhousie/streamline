@@ -43,3 +43,4 @@ spark/pyspark/
 use-cases/reproducibility/networkTrafficAnalysis/logs/
 use-cases/reproducibility/networkTrafficAnalysis/scripts/execTimePlot.py
 use-cases/reproducibility/networkTrafficAnalysis/plots/
+use-cases/app-testing/fraud-detection/trainedmodel/*
