@@ -27,7 +27,7 @@ stream of files, splits it into words, and stores word fre-quencies into another
   
   Aggegation
   
-## Input details 
+## Input details (Spark)
 1. dataDir: contains textual data files.
 2. topicConfiguration.yaml :
    - contains topic configurations
@@ -54,8 +54,10 @@ stream of files, splits it into words, and stores word fre-quencies into another
          - for CUSTOM consumer, specify the consumer script path and number of consumer instances in this node.
      - streamProcType: defines the stream processing engine type (e.g., Spark, Flink) 
      - streamProcCfg: stream processing engine configuration. 
+ 
+## Runnning 
+ 
+ ```sudo python3 main.py use-cases/app-testing/flink-applications/word-count/input.graphml``` 
 
-## Running
- ```sudo python3 main.py use-cases/app-testing/word-count/input.graphml```
 
 
