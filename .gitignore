@@ -54,3 +54,5 @@ use-cases/varying-networking-conditions/varying-packet-loss/military-coordinatio
 evaluation/accuracy-analysis/military-coordination/plots/
 evaluation/accuracy-analysis/military-coordination/scripts/\
 testbed-results/
+use-cases/reliability/message-loss/scripts/
+use-cases/reliability/message-loss/logs/

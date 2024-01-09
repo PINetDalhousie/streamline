@@ -1,0 +1,7 @@
+# topic configuration file
+---
+  topicName: topicA
+  topicBroker: 1
+  topicPartition: 1
+  topicReplica: 3
+...
