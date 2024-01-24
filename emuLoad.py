@@ -258,6 +258,70 @@ def spawnKafkaDataStoreConnector(net, prodDetailsList, storePath):
 	
 	node.popen("sudo kafka/bin/connect-standalone.sh kafka/config/connect-standalone-new.properties "+ storePath +" > logs/connectorOutput.txt &", shell=True)
 
+def startRMQProducers(net,prodDetailsList):
+	netNodes = {}    
+	
+	#Distribute nodes among classes
+	for node in net.hosts:
+		netNodes[node.name] = node
+
+	for prod in prodDetailsList:
+		nodeID = 'h' + prod['nodeId']		
+		producerType = prod["producerType"]
+		producerPath = prod["producerPath"]
+
+		node = netNodes[nodeID]
+
+		if producerType == 'CUSTOM':
+					node.popen("python3 "+ producerPath +" " +nodeID+" &", shell=True)
+
+def startRMQConsumers(net,consDetailsList):
+	netNodes = {}    
+	
+	#Distribute nodes among classes
+	for node in net.hosts:
+		netNodes[node.name] = node
+	
+	for cons in consDetailsList:
+		nodeID = 'h' + cons['nodeId']		
+		consumerType = cons["consumerType"]
+		consumerPath = cons["consumerPath"]
+
+		node = netNodes[nodeID]
+
+		if consumerType == 'CUSTOM':
+					node.popen("python3 "+ consumerPath +" " +nodeID+" &", shell=True)
+
+	
+def runRMQLoad(net, prodDetailsList, consDetailsList, args):
+	test_duration = args.duration
+	# Run RabbitMQ consumer on each node
+	print("Starting consumers")
+	# for h in net.hosts:
+	# 	node_id = str(h.name)[1:]
+	# 	h.popen("python3 rabbit_consumer_async.py &", shell=True)
+	startRMQConsumers(net, consDetailsList)
+
+	# Let consumers settle before sending messages
+	sleep_duration = 30
+	print(f"Sleeping for {sleep_duration}s to allow RabbitMQ consumers to start")
+	time.sleep(sleep_duration)
+
+	# Run producers
+	print("Starting producers")
+	startRMQProducers(net, prodDetailsList)
+
+	# Let simulation run for specified duration
+	print(f"Simulation started. Running for {test_duration}s")
+	logging.info('Simulation started at ' + str(datetime.now()))
+	timer = 0
+	while timer < test_duration:
+		time.sleep(10)
+		percentComplete = int((timer/test_duration)*100)
+		print("Processing workload: "+str(percentComplete)+"%\r")
+		timer += 10
+
+
 def runLoad(net, args, topicPlace, prodDetailsList, consDetailsList, streamProcDetailsList, \
 	storePath, isDisconnect, dcDuration, dcLinks, logDir):
 
