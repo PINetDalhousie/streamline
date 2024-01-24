@@ -35,3 +35,6 @@ def logMininetProcesses(popens, logFilePath):
 	for host, line in pmonitor(popens):
 		if host:
 			bandwidthLog.write("<%s>: %s" % (host.name, line))
+
+def get_rabbitmq_logs():
+    os.system("cp -R /var/log/rabbitmq/ logs/output/rabbitmq/")
