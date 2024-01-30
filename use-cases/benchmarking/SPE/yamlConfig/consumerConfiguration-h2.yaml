@@ -1,0 +1,5 @@
+# consumer configuration file
+---
+  topicName : topic-1
+  consumerInstances : 1
+...

@@ -1,5 +1,0 @@
-# producer configuration file
----
-  producerPath: use-cases/benchmarking/rabbit_producer_async.py
-  producerInstances: 1
-...
