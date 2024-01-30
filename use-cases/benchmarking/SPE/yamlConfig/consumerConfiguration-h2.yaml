@@ -1,5 +1,5 @@
 # consumer configuration file
 ---
-  topicName : topic-1
+  consumerPath : use-cases/benchmarking/SPE/data-consumer.py
   consumerInstances : 1
 ...
