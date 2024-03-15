@@ -57,5 +57,9 @@ This is a python library supports various operation for Natural language process
      - sparkConfig: sparkConfig will contain the spark application path and output sink. Output sink can be kafka topic/a file directory.
      
 ## Running
-   
+
+Spark application:
  ```sudo python3 main.py use-cases/benchmarking/SPE/input.graphml```
+
+Flink application
+  ```sudo python3 main.py use-cases/benchmarking/SPE/flink-input.graphml```

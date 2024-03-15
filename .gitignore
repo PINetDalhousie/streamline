@@ -62,6 +62,9 @@ use-cases/reliability/packet-loss/logs/
 use-cases/reliability/packet-loss/plots/
 use-cases/reliability/packet-loss/
 use-cases/benchmarking/ESP/input-three-node-topo.graphml
+use-cases/benchmarking/SPE/
 use-cases/benchmarking/SPE/scripts/
 use-cases/benchmarking/SPE/plots/
 use-cases/benchmarking/SPE/logs/
+pyflink/*
+!pyflink/README.md

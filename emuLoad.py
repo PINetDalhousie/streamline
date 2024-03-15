@@ -202,11 +202,15 @@ def spawnSPEClients(net, streamProcDetailsList):
 				# node.popen("sudo spark/pyspark/pyspark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1\
 				# 		use-cases/reproducibility/networkTrafficAnalysis/topicDuplicate.py &", shell=True)
 		elif speType == "Flink":
-			if not(os.path.exists("pyflink/bin")): 
-				print("pyflink is not installed in the pyflink directory, please run use_pyflink.py to install")
+			if not(os.path.exists("pyflink/pyflink/bin")): 
+				print("pyflink is not installed in the pyflink directory, check README to install")
 				sys.exit(1)
 			else:
-				node.popen("sudo env \"PYTHONPATH=$PYTHONPATH:.\" pyflink/bin/flink run --target local --python ../"+ speApp + " --jarfile ../dependency/jars/flink-sql-connector-kafka-1.17.1.jar" + " &", shell=True, cwd="pyflink")
+				try:
+					node.popen("sudo env \"PYTHONPATH=$PYTHONPATH:.\"/pyflink/pyflink/bin/flink run --target local --python "+ speApp + " --jarfile dependency/jars/flink-sql-connector-kafka-1.17.1.jar" + " &", shell=True, cwd="pyflink")
+				except Exception as e:
+					# Handle the error here
+					print("An error occurred:", str(e))
 		#more elif's for more spes 
 
 def spawnSPEClusterClients(node, spe):
