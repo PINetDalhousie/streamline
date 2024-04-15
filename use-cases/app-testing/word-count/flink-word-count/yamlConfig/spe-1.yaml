@@ -1,4 +1,4 @@
 # Stream processing engine configuration
 ---
-  app : uuse-cases/app-testing/flink-applications/word-count/wordCount.py
+  app : use-cases/app-testing/word-count/flink-word-count/wordCount.py
 ...

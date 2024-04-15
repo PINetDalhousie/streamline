@@ -25,28 +25,28 @@
   
    
   <graph id="simple-topo" edgedefault="undirected">
-    <data key="topicCfg">use-cases/app-testing/word-count/yamlConfig/topicConfiguration.yaml</data>
+    <data key="topicCfg">use-cases/app-testing/word-count/spark-word-count/yamlConfig/topicConfiguration.yaml</data>
 
     <node id="s1"/>
 
     <node id="h1">
       <data key="prodType">SFST</data>
-      <data key="prodCfg">use-cases/app-testing/word-count/yamlConfig/producerConfiguration.yaml</data>
+      <data key="prodCfg">use-cases/app-testing/word-count/spark-word-count/yamlConfig/producerConfiguration.yaml</data>
 	  </node>            
     
     <node id="h2">
       <data key="zk">1</data>
-      <data key="brokerCfg">use-cases/app-testing/word-count/yamlConfig/broker.yaml</data>
+      <data key="brokerCfg">use-cases/app-testing/word-count/spark-word-count/yamlConfig/broker.yaml</data>
 	  </node>   
 
     <node id="h3">   
       <data key="streamProcType">Spark</data>
-      <data key="streamProcCfg">use-cases/app-testing/word-count/yamlConfig/spe-1.yaml</data>
+      <data key="streamProcCfg">use-cases/app-testing/word-count/spark-word-count/yamlConfig/spe-1.yaml</data>
 	  </node>
 
     <node id="h4">
       <data key="consType">STANDARD</data>
-      <data key="consCfg">use-cases/app-testing/word-count/yamlConfig/consumerConfigurationHost4.yaml</data>  
+      <data key="consCfg">use-cases/app-testing/word-count/spark-word-count/yamlConfig/consumerConfigurationHost4.yaml</data>  
 	  </node>         
 
     <edge source="s1" target="h1">

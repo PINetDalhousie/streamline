@@ -1,6 +1,6 @@
 # producer configuration file
 ---
-  filePath: use-cases/app-testing/sentiment-analysis/data.txt
+  filePath: use-cases/app-testing/sentiment-analysis/spark-sentiment-analysis/data.txt
   topicName: topic-0
   totalMessages: 1
   producerInstances: 1
