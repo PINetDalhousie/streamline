@@ -17,8 +17,8 @@ from pyspark.ml.classification import LinearSVC
 
 import sys
 
-sparkOutputTo = 'use-cases/app-testing/fraud-detection/trainedmodel'
-dfpath =  "use-cases/app-testing/fraud-detection/training.csv"
+sparkOutputTo = 'use-cases/app-testing/fraud-detection/spark-fraud-detection/trainedmodel'
+dfpath =  "use-cases/app-testing/fraud-detection/spark-fraud-detection/training.csv"
 
 #Basic spark session construction and logging setting
 spark = SparkSession.builder.master("local[4]").appName("Fraud Detections").getOrCreate()
