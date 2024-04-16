@@ -1,6 +1,6 @@
 # producer configuration file h2
 ---
-  filePath: use-cases/app-testing/ride-selection/nycTaxiFaresData.csv
+  filePath: use-cases/app-testing/ride-selection/spark-ride-selection/nycTaxiFaresData.csv
   topicName: taxifares
   totalMessages: 1
   producerInstances: 1
