@@ -12,6 +12,12 @@ We start off by creating two files. In the first file, we create a dataframe by 
 ### Topology
 ![image](https://user-images.githubusercontent.com/6629591/184164321-bf5a49fb-a657-46d4-a4b3-88ed6c81172b.png)
 
+## Queries
+
+  df = df.map(lambda row: transform_and_clean_row(row)) \
+        .filter(lambda row: row is not None)  
+
+
 ### Dataset
 
 We used a fraud detection dataset from Kaggle https://www.kaggle.com/datasets/ealaxi/paysim1
@@ -24,13 +30,11 @@ We downloaded the csv file containing this dataset. After that, we manually spli
 
 ### Machine Learning Model
 
-We used pyspark.ml library for implementing the machine learning model.
+We used pyflink.ml library for implementing the machine learning model.
 
 We used Linear SVM. Amongst the other classification models we were considering, we got the impression that this one was not used often. As a result, we tried to test this model. As it made decent predictions, we decided to use this model.
 
 A machine learning project typically involves steps like data preprocessing, feature extraction, model fitting and evaluating results. We need to perform a lot of transformations on the data in sequence. A pipeline allows us to maintain the data flow of all the relevant transformations that are required to reach the end result.
-
-We need to define the stages of the pipeline which act as a chain of command for Spark to run. Here, each stage is either a Transformer or an Estimator.
 
 Transformers convert one dataframe into another either by updating the current values of a particular column (like converting categorical columns to numeric) or mapping it to some other values by using a defined logic.
 
@@ -46,37 +50,24 @@ For the inference part, we just need to pass the unlabelled test data through th
 1. About data
    - training.csv : for large file size, not added in this repository 
    - testing.csv : data to test the trained model
-2. topicConfiguration.yaml :
-   - contains topic configurations
-     - specify topic name ('topicName')
-     - specify broker ID to initiate this topic ('topicBroker')
-     - number of partition(s) in this topic ('topicPartition')
-     - number of replica(s) in this topic ('topicReplica')
-3. Applications
-   - fraud_detection.py : Spark application to train the model 
-   - fraud_predicting.py : Spark structured streaming application to detect financial frauds
-4. Configuration
-    input_only_spark.graphml: 
-    - sparkConfig: sparkConfig contains spark application path and output sink. Output sink can be the file directory of the trained model.
+2. yamlConfig directory [Check configuration parameters here](/documentation/config-parameters.pdf)
+   - broker.yaml : contains broker(s) configuration
+   - topicConfiguration.yaml : contains topic(s) configuration
+   - producerConfiguration.yaml : contains producer(s) configuration
+   - consumerConfiguration.yaml : contains consumer(s) configuration
+   - spe.yaml : contains strea processing (Flink) application configuration
+3. Configuration
+   - input_only_flink.graphml: at first, run this to train the model
+   - input.graphml:
+     - contains topology description
+       - node details (switch, host)
+       - edge details (bandwidth, latency, source port, destination port)
+     - contains component(s) configurations specified as YAML configurations
+4. Applications
+   - fraud_detection.py : Flink application to train the model 
+   - fraud_predicting.py : Flink application to detect financial frauds
 
-    input.graphml: 
-    - containWe will just pass the data through the pipeline and we are done!s topology description
-        - node details (switch, host)
-        - edge details (bandwidth, latency, source port, destination port)
-    - containWe will just pass the data through the pipeline and we are done!s component(s) configurations 
-        - topicConfig: path to the topic configuration file
-        - zookeeper: 1 = hostnode contains a zookeeper instance
-        - broker: 1 = hostnode contains a zookeeper instance
-        - producerType: producer type can be SFST/MFMT/ELTT/CUSTOM; SFST denotes from Single File to Single Topic. ELTT is defined when Each line To Topic i.e. each line of the file is produced to the topic as a single message. For SFST/MFMT/ELTT, a standard producer will work be default. Provided that the user has his own producer, he can use it by specifying CUSTOM in the producerType and give the relative path as input in producerType attribute as a pair of producerType,producerFilePath.
-        - producerConfig: specified in producerConfiguration.yaml
-          for SFST/ELTT, user needs to specify filePath, name of the topic to produce, number of files and number of producer instances in this node. For CUSTOM producer type, only producer script path and number of producer instances on this node are the two required parameters to specify.
-        - consumerType: consumer type can be STANDARD/CUSTOM; To use standard consumer, specify 'STANDARD'. Provided that the user has his own consumer, he can use it by specifying CUSTOM in the consumerType and give the relative path as input in producerType attribute as a pair like CUSTOM,producerFilePath
-        - consumerConfig: each consumer configuration is specified in ''consumerConfiguration<HostID>.yaml' file. In the YAML file, 
-         - for STNDARD consumer, specify the topic name where the consumer will consumer from and number of consumer instances in this node.
-         - for CUSTOM consumer, specify the consumer script path and number of consumer instances in this node.
-        - sparkConfig: sparkConfig contains the spark application path and output sink. Output sink We will just pass the data through the pipeline and we are done!can be kafka topic/a file directory.
-
-    "--only-spark 1" argument ensures that Spark application will run individually without Kafka.
+5. trainedmodel: directory to store the trained model after running the fraud_detection.py script
 
 
 ## Running
@@ -84,9 +75,7 @@ For the inference part, we just need to pass the unlabelled test data through th
 As the training data is almost 307MB, didn't upload it as part of this project repository.
 
 To train the model:
- ```sudo python3 main.py use-cases/app-testing/fraud-detection/flink-fraud-detection/input_only_spark.graphml --only-spark 1```
+ ```sudo python3 main.py use-cases/app-testing/fraud-detection/flink-fraud-detection/input_only_flink.graphml --only-flink 1```
 
  To predict on testing data:
   ```sudo python3 main.py use-cases/app-testing/fraud-detection/flink-fraud-detection/input.graphml```
-   
-<!-- command to run the temporary script: sudo python3 main.py use-cases/app-testing/fraud-detection/flink-fraud-detection/input-temp.graphml-->

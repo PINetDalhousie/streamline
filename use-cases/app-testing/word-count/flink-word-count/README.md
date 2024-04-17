@@ -31,11 +31,11 @@ Word count is a standard benchmarking application for stream processing systems.
 ## Input details 
 1. dataDir: contains textual data files.
 2. yamlConfig directory [Check configuration parameters here](/documentation/config-parameters.pdf)
-   - [<broker].yaml : contains broker(s) configuration
-   - '<topicConfiguration>'.yaml : contains topic(s) configuration
-   - <producerConfiguration>.yaml : contains producer(s) configuration
-   - <consumerConfiguration>.yaml : contains consumer(s) configuration
-   - <spe>.yaml : contains strea processing (Flink) application configuration
+   - broker.yaml : contains broker(s) configuration
+   - topicConfiguration.yaml : contains topic(s) configuration
+   - producerConfiguration.yaml : contains producer(s) configuration
+   - consumerConfiguration.yaml : contains consumer(s) configuration
+   - spe.yaml : contains strea processing (Flink) application configuration
 3. wordCount.py: Flink application
 4. input.graphml:
    - contains topology description
