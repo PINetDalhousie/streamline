@@ -203,7 +203,7 @@ def spawnSPEClients(net, streamProcDetailsList):
 				# 		use-cases/reproducibility/networkTrafficAnalysis/topicDuplicate.py &", shell=True)
 		elif speType == "Flink":
 			if not(os.path.exists("pyflink/pyflink/bin")): 
-				print("pyflink is not installed in the pyflink directory, check README to install")
+				print("pyflink is nprocess =ot installed in the pyflink directory, check README to install")
 				sys.exit(1)
 			else:
 				try:
