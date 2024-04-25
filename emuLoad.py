@@ -207,7 +207,15 @@ def spawnSPEClients(net, streamProcDetailsList):
 				sys.exit(1)
 			else:
 				try:
-					node.popen("sudo env \"PYTHONPATH=$PYTHONPATH:.\"/pyflink/pyflink/bin/flink run --target local --python "+ speApp + " --jarfile dependency/jars/flink-sql-connector-kafka-1.17.1.jar" + " &", shell=True, cwd="pyflink")
+					print("Starting Flink job")
+					process = node.popen("sudo env \"PYTHONPATH=$PYTHONPATH:.\"/pyflink/pyflink/bin/flink run --target local --python "+ speApp + " --jarfile dependency/jars/flink-sql-connector-kafka-1.17.1.jar" + " &", shell=True, cwd="pyflink")
+					
+					# process = node.popen("sudo env \"PYTHONPATH=$PYTHONPATH:\" .pyflink/pyflink/bin/flink run --target local --python "+ "." + speApp + " --jarfile .dependency/jars/flink-sql-connector-kafka-1.17.1.jar" + " &", shell=True, cwd="pyflink", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+					# Capture the output and error streams
+					stdout, stderr = process.communicate()
+					# Print the output and error streams
+					print("Output:", stdout.decode())
+					print("Error:", stderr.decode())
 				except Exception as e:
 					# Handle the error here
 					print("An error occurred:", str(e))
