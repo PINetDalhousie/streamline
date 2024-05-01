@@ -1,4 +1,5 @@
-# to run this script: sudo /home/monzurul/Desktop/amnis-data-sync/spark/pyspark/bin/spark-submit latencyScript.py <logDir> <50ms>
+# to run this script: sudo spark/pyspark/pyspark/bin/spark-submit latencyScript.py <logDir> <linkDelay(ms)>
+# sudo spark/pyspark/pyspark/bin/spark-submit use-cases/varying-networking-conditions/varying-link-latency/word-count/testbedScripts/latencyScript.py use-cases/varying-networking-conditions/varying-link-latency/word-count/openStackLogs/broker/150ms 150ms
 
 # This file calculates the latency of processing each file by a spark application, using information
 # from producer and consumer logs
@@ -152,16 +153,19 @@ print(*tuple1)
 
 print("latency after sorting by filenumber: ")
 print(*tuple2)
-print(type(tuple2))
+# print(type(tuple2))
 
 minLatency = p.min(tuple2)
 maxLatency = p.max(tuple2)
-print(maxLatency)
 
 # showing average as a horizontal line
 latencySum = p.sum(tuple2)
 averageLatency = float(latencySum/len(tuple1))
 plt.axhline(y=averageLatency, color='r', linestyle='-')
+
+print("Min latency: "+str(minLatency)+" ms")
+print("Max latency: "+str(maxLatency)+" ms")
+print("Avg latency: "+str(averageLatency)+" ms")
 
 
 plt.xlabel('File')
