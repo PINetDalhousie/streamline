@@ -72,3 +72,5 @@ pyflink/*
 !pyflink/README.md
 use-cases/varying-networking-conditions/varying-link-latency/word-count/openStackLogs/
 use-cases/varying-networking-conditions/varying-link-latency/word-count/testbedScripts/openStackRunScript.sh
+use-cases/varying-networking-conditions/varying-link-latency/word-count/testbedScripts/testbedRunScript.sh
+use-cases/varying-networking-conditions/varying-link-latency/word-count/openStackScripts/
