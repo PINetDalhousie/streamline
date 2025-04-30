@@ -135,6 +135,7 @@ if __name__ == '__main__':
 		print("Configuring RabbitMQ cluster")
 		rMQBrokerPlace = [item['nodeId'] for item in brokerPlace]
 		emuRMQ.runRMQConfigure(net, rMQBrokerPlace)
+		print(rMQBrokerPlace)
 	elif checkSpecificValue(brokerPlace, "brokerType", "kafka") == True:
 		print("Configuring Kafka cluster")
 		emuZk.configureZkCluster(zkPlace)
@@ -145,14 +146,14 @@ if __name__ == '__main__':
 	for switch in net.switches:
 		net.get(switch.name).start([])
 
-	logging.info('Network started')
+	print('Network started')
 
 	#emuNetwork.configureNetwork(args.topo)
 	time.sleep(1)
 
-	print("Testing network connectivity")
-	net.pingAll()
-	print("Finished network connectivity test")
+	# print("Testing network connectivity")
+	# net.pingAll()
+	# print("Finished network connectivity test")
     		
 	#Start monitoring tasks
 	popens[pID] = subprocess.Popen("sudo python3 bandwidth-monitor.py "+str(nSwitches)+" &", shell=True)
@@ -173,7 +174,7 @@ if __name__ == '__main__':
 	killSubprocs(brokerPlace, zkPlace, prodDetailsList, streamProcDetailsList, consDetailsList)
 
 	net.stop()
-	logging.info('Network stopped')
+	print('Network stopped')
 	emuLogs.get_rabbitmq_logs()
 
 	# Clean kafka-MySQL connection state before new simulation

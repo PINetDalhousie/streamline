@@ -74,3 +74,7 @@ use-cases/varying-networking-conditions/varying-link-latency/word-count/openStac
 use-cases/varying-networking-conditions/varying-link-latency/word-count/testbedScripts/openStackRunScript.sh
 use-cases/varying-networking-conditions/varying-link-latency/word-count/testbedScripts/testbedRunScript.sh
 use-cases/varying-networking-conditions/varying-link-latency/word-count/openStackScripts/
+use-cases/benchmarking/smart-grid/
+use-cases/benchmarking/smart-grid-old/
+use-cases/reliability/message-loss/scripts/plotGenerate.py
+plots/
