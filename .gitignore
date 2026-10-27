@@ -78,3 +78,5 @@ use-cases/benchmarking/smart-grid/
 use-cases/benchmarking/smart-grid-old/
 use-cases/reliability/message-loss/scripts/plotGenerate.py
 plots/
+use-cases/reliability/SPE-reliability
+evaluation/accuracy-analysis/namb-comparison
