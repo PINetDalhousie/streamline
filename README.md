@@ -23,6 +23,7 @@ The tool was tested on Ubuntu 20.04.4 and is based on Python 3.8.10, Kafka 2.13-
   - Matplotlib 3.3.4
   - Seaborn 0.12.1
   - PyYAML 5.3.1
+  - apache-flink 1.17.1
 
   Most dependencies can be installed using `apt install` and `pip3 install`:
   
