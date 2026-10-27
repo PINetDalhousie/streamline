@@ -1,0 +1,5 @@
+# producer configuration file
+---
+  producerPath: use-cases/varying-networking-conditions/varying-packet-loss/military-coordination/military-data-producer.py
+  producerInstances: 1
+...
