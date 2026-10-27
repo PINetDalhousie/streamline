@@ -1,19 +1,26 @@
+## Command to run script: 
+#first, need to be in pyflink directory.
+# then enter command: sudo bin/flink run --target local --python ../use-cases/app-testing/word-count/flink-word-count/flink-word-count.py --jarfile ../dependency/jars/flink-sql-connector-kafka-1.17.1.jar
+
 import argparse
 import logging
 import sys
-
-from pyflink.common import WatermarkStrategy, Encoder, Types
+sys.path.append(".")
+sys.path.append("../")
+#sys.path.append("../../../")
+from pyflink.common.watermark_strategy import WatermarkStrategy
+from pyflink.common.serialization import Encoder
+from pyflink.common.typeinfo import Types
 from pyflink.datastream import StreamExecutionEnvironment, RuntimeExecutionMode
 from pyflink.datastream.connectors.file_system import FileSource, StreamFormat, FileSink, OutputFileConfig, RollingPolicy
-from pyflink.datastream.connectors import KafkaSource
+from pyflink.datastream.connectors.kafka import KafkaSource
 from pyflink.datastream.connectors.kafka import KafkaSink, KafkaRecordSerializationSchema
 from pyflink.common import SimpleStringSchema
-log_file_path = "logs/output/flink.log"
+log_file_path = "../logs/output/flink.log"
 IN_TOPIC = "inTopic" #Same as in spark
 OUT_TOPIC = "outTopic"
 logging.basicConfig(filename=log_file_path, level=logging.INFO, \
-        format="%(asctime)s %(levelname)s: %(message)s", \
-        level=logging.INFO)
+        format="%(asctime)s %(levelname)s: %(message)s")
 logging.info("input: "+IN_TOPIC)
 logging.info("output: "+ OUT_TOPIC)
 
@@ -79,4 +86,6 @@ if __name__ == '__main__':
     argv = sys.argv[1:]
     known_args, _ = parser.parse_known_args(argv)
 
+
     word_count(known_args.input, known_args.output)
+    logging.info("successfully completed")
