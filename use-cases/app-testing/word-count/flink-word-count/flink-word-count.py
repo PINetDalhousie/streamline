@@ -6,8 +6,6 @@ import argparse
 import logging
 import sys
 sys.path.append(".")
-sys.path.append("../")
-#sys.path.append("../../../")
 from pyflink.common.watermark_strategy import WatermarkStrategy
 from pyflink.common.serialization import Encoder
 from pyflink.common.typeinfo import Types
