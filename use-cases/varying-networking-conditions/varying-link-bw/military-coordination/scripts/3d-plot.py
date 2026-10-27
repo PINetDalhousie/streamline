@@ -23,8 +23,8 @@ for i, x_inner in enumerate(X):
                     Z.append(values)
 # Convert to Mbps
 Z = [[value * 8 for value in inner_list] for inner_list in Z]
-print("Length of Z: {}".format(len(Z)))
-print(Z)
+# print("Length of Z: {}".format(len(Z)))
+# print(Z)
 
 # # ***************** Shape matching *******************
 # Ensure all inner lists in Z are of length 70
@@ -59,10 +59,13 @@ fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
 surf = ax.plot_surface(X, Y, Z, cmap='viridis')
 
-ax.set_xlabel('Link bandwidth (Mbps)', labelpad=1, fontweight='bold', fontsize=12) 
-ax.set_ylabel('Message rate (msg/s)', labelpad=1, fontweight='bold', fontsize=12) 
-ax.set_zlabel('Rx Throughput (Mbps)', labelpad=10, fontweight='bold', fontsize=12) 
+ax.set_xlabel('Link bandwidth (Mbps)', labelpad=5, fontweight='bold', fontsize=10) 
+ax.set_ylabel('Message rate (msg/s)', labelpad=5, fontweight='bold', fontsize=10) 
+ax.set_zlabel('Tx Throughput (Mbps)', labelpad=5, fontweight='bold', fontsize=10) 
 # ax.set_title('3D plot of three plots') 
+
+# Rotate the plot
+ax.view_init(elev=20, azim=-35)
 
 # plt.show()
 plt.savefig('use-cases/varying-networking-conditions/varying-link-bw/military-coordination/plots/3d-plot.pdf', format="pdf", dpi=300, bbox_inches='tight')
