@@ -1,0 +1,5 @@
+# producer configuration file
+---
+  producerPath: evaluation/accuracy-analysis/military-coordination/military-data-producer.py
+  producerInstances: 1
+...

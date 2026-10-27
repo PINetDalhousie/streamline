@@ -1,0 +1,5 @@
+# consumer configuration file
+---
+  consumerPath : evaluation/accuracy-analysis/military-coordination/military-consumerSingle.py
+  consumerInstances : 1
+...

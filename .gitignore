@@ -30,3 +30,4 @@ use-cases/varying-networking-conditions/varying-link-bw/military-coordination/lo
 use-cases/varying-networking-conditions/varying-link-bw/word-count/MFSTDataDir/
 use-cases/varying-networking-conditions/varying-link-bw/word-count/logs/
 use-cases/varying-networking-conditions/varying-packet-loss/military-coordination/logs/
+evaluation/accuracy-analysis/military-coordination/logs
