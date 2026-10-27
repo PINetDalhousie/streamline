@@ -1,4 +1,4 @@
-# command: sudo python3 use-cases/varying-networking-conditions/varying-link-bw/military-coordination/scripts/combinedThroughput.py --log-dir use-cases/varying-networking-conditions/varying-link-bw/military-coordination/logs --link-bw 20 --scenario-list 300,500,600
+# command: sudo python3 use-cases/varying-networking-conditions/varying-link-bw/military-coordination/scripts/combinedThroughput-by-varying-msgRate.py --log-dir use-cases/varying-networking-conditions/varying-link-bw/military-coordination/logs --link-bw 20 --scenario-list 300,500,600
 #!/usr/bin/python3
 
 import os
@@ -159,24 +159,16 @@ def overheadCheckPlot(portFlag, msgSize,scenario, label, color, ls, lw, cap):
         timeList = timeList[:len(newBandwidthSum)]
 
         newBandwidthSumLeaderLess = [x / 1000000 for x in bandwidthSumLeaderLess]
+
         aggregatedPlot(portFlag,timeList, newBandwidthSum, newBandwidthSumLeaderLess, "Throughput (Mbytes/s)", msgSize, countX, label, color, ls, lw)    
     
-    # if portFlag=="bytes" and scenario==2:
-    #     #Change legend order
-    #     # handles, labels = plt.gca().get_legend_handles_labels()
-    #     # order = [0,2,1]
-    #     # plt.legend([handles[idx] for idx in order],[labels[idx] for idx in order], frameon=False, loc='upper left', fontsize=18)
-
-    
-    #     # plt.savefig("use-cases/varying-networking-conditions/varying-link-bw/military-coordination/plots/combinedThroughput.pdf", format='pdf', bbox_inches="tight")
-    #     plt.savefig("use-cases/varying-networking-conditions/varying-link-bw/military-coordination/plots/combinedThroughput", bbox_inches="tight")
-    # else:    
-    #     plt.savefig(logDirctory+args.portType+" aggregated "+portFlag+"("+str(args.switches)+" nodes "+str(args.nTopics)+" topics "+str(args.replication)+" replication)",bbox_inches="tight")         
+    return newBandwidthSum, timeList
 
 #for aggregated plot of all host entry ports
 def plotAggregatedBandwidth(scenario, label, color, ls, lw, cap):   
     msgSize = processMessageInput()
-    overheadCheckPlot("bytes", msgSize, scenario, label, color, ls, lw, cap)
+    aggThroughputList, timeList = overheadCheckPlot("bytes", msgSize, scenario, label, color, ls, lw, cap)
+    return aggThroughputList, timeList
        
 #parsing the sigle port        
 def parseInput(portSwitchId):
@@ -212,8 +204,12 @@ colorLst = ['r','g','b', 'y','k','m']
 for index, item in enumerate(scenarioList):
     logDirectory = args.logDir + "/" + str(args.linkBW) +"Mbps/scenario-"+item + "msgPs/bandwidth/"
     # ls can be solid or dashed 
-    plotAggregatedBandwidth(scenario=int(item), label=item+" msg/s", color=colorLst[index], ls='solid', lw=3.0, cap=9.0)      #for aggregated plot    
+    aggThroughputList, timeList = plotAggregatedBandwidth(scenario=int(item), label=item+" msg/s", color=colorLst[index], ls='solid', lw=3.0, cap=100.0)   # cap 9.0 can be used to discard outliers
+    # store aggregated throughput data in a file
+    with open(logDirectory+'aggregated-throughput.txt', 'w') as f:
+        for i in range(len(aggThroughputList)):
+            f.write(str(timeList[i]) + " " + str(aggThroughputList[i]) + "\n")
 
 # plt.savefig("use-cases/varying-networking-conditions/varying-link-bw/military-coordination/plots/10Mbps-combinedThroughput", bbox_inches="tight")
-plotDir= args.logDir.replace('logs','plots')+"/"+ str(args.linkBW)+"Mbps-combinedThroughput"
-plt.savefig(plotDir, bbox_inches="tight")
+filePath= args.logDir.replace('logs','plots')+"/"+ str(args.linkBW)+"Mbps-combinedThroughput"
+plt.savefig(filePath+".pdf", format='pdf', bbox_inches="tight")
