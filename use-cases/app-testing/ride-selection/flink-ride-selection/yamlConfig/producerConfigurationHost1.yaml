@@ -1,6 +1,6 @@
 # producer configuration file h1
 ---
-  filePath: use-cases/app-testing/ride-selection/nycTaxiRidesData.csv
+  filePath: use-cases/app-testing/ride-selection/flink-ride-selection/nycTaxiRidesData.csv
   topicName: taxirides
   totalMessages: 1
   producerInstances: 1
