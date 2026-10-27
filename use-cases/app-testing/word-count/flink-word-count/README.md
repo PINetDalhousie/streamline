@@ -57,7 +57,7 @@ stream of files, splits it into words, and stores word fre-quencies into another
  
 ## Runnning 
  
- ```sudo python3 main.py use-cases/app-testing/flink-applications/word-count/input.graphml``` 
+ ```sudo python3 main.py use-cases/app-testing/word-count/flink-word-count/input.graphml``` 
 
 
 
