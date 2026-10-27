@@ -1,0 +1,5 @@
+# producer configuration file
+---
+  producerPath: use-cases/reliability/message-loss/producer.py
+  producerInstances: 1
+...

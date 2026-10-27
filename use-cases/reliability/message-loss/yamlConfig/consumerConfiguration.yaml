@@ -1,0 +1,5 @@
+# consumer configuration file
+---
+  consumerPath : use-cases/reliability/message-loss/consumer.py
+  consumerInstances : 1
+...
