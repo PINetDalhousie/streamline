@@ -11,7 +11,6 @@ kafka/config/zookeeper*.properties
 !kafka/config/zookeeper.properties
 tests/input/
 use-cases/app-testing/fraud-detection/training.csv
-use-cases/app-testing/maritime-monitoring/maritime-mysql-bulk-sink.properties
 use-cases/reproducibility/networkTrafficAnalysis/__pycache__/
 use-cases/reproducibility/networkTrafficAnalysis/logs/
 use-cases/disconnection/millitary-coordination/logs
@@ -44,3 +43,19 @@ use-cases/reproducibility/networkTrafficAnalysis/logs/
 use-cases/reproducibility/networkTrafficAnalysis/scripts/execTimePlot.py
 use-cases/reproducibility/networkTrafficAnalysis/plots/
 use-cases/app-testing/fraud-detection/trainedmodel/*
+use-cases/app-testing/maritime-monitoring/maritime-mysql-bulk-sink-original.properties
+use-cases/app-testing/ride-selection/input-temp.graphml
+use-cases/app-testing/sentiment-analysis/data.csv
+use-cases/app-testing/word-count/dataDir/randomText1.txt
+use-cases/disconnection/military-coordination/scripts/
+use-cases/reproducibility/networkTrafficAnalysis/scripts/
+use-cases/reproducibility/videoAnalysis/scripts/
+use-cases/varying-networking-conditions/varying-link-bw/military-coordination/plots/
+use-cases/varying-networking-conditions/varying-link-bw/military-coordination/scripts/
+use-cases/varying-networking-conditions/varying-link-bw/word-count/simulationScripts/
+use-cases/varying-networking-conditions/varying-link-bw/word-count/input-original.graphml
+use-cases/varying-networking-conditions/varying-link-latency/word-count/simulationScripts/use-cases/varying-networking-conditions/varying-link-latency/word-count/testbedScripts/
+use-cases/varying-networking-conditions/varying-packet-loss/military-coordination/plots/
+use-cases/varying-networking-conditions/varying-packet-loss/military-coordination/scripts/
+evaluation/accuracy-analysis/military-coordination/plots/
+evaluation/accuracy-analysis/military-coordination/scripts/

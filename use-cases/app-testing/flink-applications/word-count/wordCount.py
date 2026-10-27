@@ -14,7 +14,7 @@ from pyflink.datastream.connectors.file_system import FileSource, StreamFormat, 
 from pyflink.datastream.connectors.kafka import KafkaSource
 from pyflink.datastream.connectors.kafka import KafkaSink, KafkaRecordSerializationSchema
 from pyflink.common import SimpleStringSchema
-log_file_path = "../logs/output/flink.log"
+log_file_path = "logs/output/flink.log"
 IN_TOPIC = "inTopic" #Same as in spark
 OUT_TOPIC = "outTopic"
 logging.basicConfig(filename=log_file_path, level=logging.INFO, \

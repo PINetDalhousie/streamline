@@ -25,30 +25,30 @@
   
    
   <graph id="simple-topo" edgedefault="undirected">
-    <data key="topicCfg">use-cases/varying-networking-conditions/varying-link-bw/word-count/yamlConfig/topicConfiguration.yaml</data>
+    <data key="topicCfg">use-cases/app-testing/flink-applications/word-count/yamlConfig/topicConfiguration.yaml</data>
 
     <node id="s1"/>
 
     <node id="h1">
-      <data key="prodType">MFST</data>
-      <data key="prodCfg">use-cases/varying-networking-conditions/varying-link-bw/word-count/yamlConfig/producerConfiguration-temp.yaml</data>
+      <data key="prodType">SFST</data>
+      <data key="prodCfg">use-cases/app-testing/flink-applications/word-count/yamlConfig/producerConfiguration.yaml</data>
 	  </node>            
     
     <node id="h2">
       <data key="zk">1</data>
-      <data key="brokerCfg">use-cases/varying-networking-conditions/varying-link-bw/word-count/yamlConfig/broker.yaml</data>
+      <data key="brokerCfg">use-cases/app-testing/flink-applications/word-count/yamlConfig/broker.yaml</data>
 	  </node>   
 
     <node id="h3">   
-      <data key="streamProcType">Spark</data>
-      <data key="streamProcCfg">use-cases/varying-networking-conditions/varying-link-bw/word-count/yamlConfig/spe-1.yaml</data>
+      <data key="streamProcType">Flink</data>
+      <data key="streamProcCfg">use-cases/app-testing/flink-applications/word-count/yamlConfig/spe-flink.yaml</data>
 	  </node>
 
     <node id="h4">
-      <!-- <data key="brokerCfg">use-cases/varying-networking-conditions/varying-link-bw/word-count/yamlConfig/broker.yaml</data> -->
       <data key="consType">STANDARD</data>
-      <data key="consCfg">use-cases/varying-networking-conditions/varying-link-bw/word-count/yamlConfig/consumerConfigurationHost4.yaml</data>  
-	  </node>         
+      <data key="consCfg">use-cases/app-testing/flink-applications/word-count/yamlConfig/consumerConfigurationHost4.yaml</data>  
+	  </node> 
+             
 
     <edge source="s1" target="h1">
       <data key="bw">1000</data>
@@ -73,7 +73,7 @@
 
     <edge source="s1" target="h4">
       <data key="bw">1000</data>
-      <data key="lat">1</data>
+      <data key="lat">75</data>
       <data key="st">4</data>
       <data key="dt">1</data>
     </edge>
