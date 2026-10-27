@@ -33,7 +33,7 @@ try:
         logging.info("input: "+sparkInputFrom)
         logging.info("output: "+sparkOutputTo)
 
-        trainedModel = "use-cases/app-testing/fraud-detection/trainedmodel"
+        trainedModel = "use-cases/app-testing/fraud-detection/spark-fraud-detection/trainedmodel"
         predpath = "logs/output/fraud_detection/prediction_output"
         checkpath = "logs/output/fraud_detection/fraudCheckpoint"
 
