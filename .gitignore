@@ -56,3 +56,8 @@ evaluation/accuracy-analysis/military-coordination/scripts/\
 testbed-results/
 use-cases/reliability/message-loss/scripts/
 use-cases/reliability/message-loss/logs/
+use-cases/reliability/message-loss/plots/
+use-cases/reliability/packet-loss/scripts/
+use-cases/reliability/packet-loss/logs/
+use-cases/reliability/packet-loss/plots/
+use-cases/reliability/packet-loss/

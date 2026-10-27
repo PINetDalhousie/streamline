@@ -65,7 +65,7 @@ try:
 	nodeID = node[1:]
 	
 	acks = 0
-	messageFilePath=use-cases/reliability/message-loss/dataDir/500B-load.txt
+	messageFilePath="use-cases/reliability/message-loss/dataDir/500B-load.txt"
 	logDir = "logs/output"
 	logging.basicConfig(filename=logDir+"/prod/"+"prod-node"+nodeID+\
 								"-instance"+str(prodInstanceID)+".log",
