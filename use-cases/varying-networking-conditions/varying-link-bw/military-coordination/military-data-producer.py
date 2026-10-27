@@ -84,7 +84,7 @@ try:
 	
 	tClass = 1.0
 	mSizeString = 'fixed,10'
-	mRate = 30 #1.0
+	mRate = 1000 #30 #1.0
 	nTopics = 2
 
 	acks = 1
