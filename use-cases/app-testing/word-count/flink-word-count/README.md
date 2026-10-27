@@ -1,7 +1,6 @@
 # Word count
 
-Word count is a standard benchmarking application for stream processing systems. It collects textual data from a
-stream of files, splits it into words, and stores word fre-quencies into another file. At the end of text split and fre-quency counting of words, results stored to a Kafka topic.
+Word count is a standard benchmarking application for stream processing systems. It collects textual data from a stream of files, splits it into words, and stores word fre-quencies into another file. At the end of text split and fre-quency counting of words, results stored to a Kafka topic.
 
 ## Architecture
 
@@ -16,10 +15,12 @@ stream of files, splits it into words, and stores word fre-quencies into another
 
 
 ## Queries  
-  
-      lines.select(explode(split(lines.value, ' ')).alias('word'))
-      
-      words.groupBy('word').count()
+
+      ds.flat_map(split) \
+        .map(lambda i: (i, 1), output_type=Types.TUPLE([Types.STRING(), Types.INT()])) \
+        .key_by(lambda i: i[0]) \
+        .reduce(lambda i, j: (i[0], i[1] + j[1])) \
+        .map(lambda i: f'{i[0]}: {i[1]}', output_type = Types.STRING())
   
 ## Operations
   
@@ -27,33 +28,20 @@ stream of files, splits it into words, and stores word fre-quencies into another
   
   Aggegation
   
-## Input details (Spark)
+## Input details 
 1. dataDir: contains textual data files.
-2. topicConfiguration.yaml :
-   - contains topic configurations
-     - specify topic name ('topicName')
-     - specify broker ID to initiate this topic ('topicBroker')
-     - number of partition(s) in this topic ('topicPartition')
-     - number of replica(s) in this topic ('topicReplica')
-3. wordCount.py: Spark SS application
+2. yamlConfig directory [Check configuration parameters here](/documentation/config-parameters.pdf)
+   - <broker>.yaml : contains broker(s) configuration
+   - <topicConfiguration>.yaml : contains topic(s) configuration
+   - <producerConfiguration>.yaml : contains producer(s) configuration
+   - <consumerConfiguration>.yaml : contains consumer(s) configuration
+   - <spe>.yaml : contains strea processing (Flink) application configuration
+3. wordCount.py: Flink application
 4. input.graphml:
    - contains topology description
      - node details (switch, host)
      - edge details (bandwidth, latency, source port, destination port)
-   - contains component(s) configurations 
-     - topicConfig: path to the topic configuration file
-     - zookeeper: 1 = hostnode contains a zookeeper instance
-     - broker: 1 = hostnode contains a zookeeper instance
-     - producerType: producer type can be SFST/MFMT/ELTT/CUSTOM; SFST denotes from Single File to Single Topic. ELTT is defined when Each line To Topic i.e. each line of the file is produced to the topic as a single message. For SFST/MFMT/ELTT, a standard producer will work be default.
-     Provided that the user has his own producer, he can use it by specifying CUSTOM in the producerType and give the relative path as input in producerType attribute as a pair of producerType,producerFilePath.
-     - producerConfig: specified in producerConfiguration.yaml
-          for SFST/ELTT, user needs to specify filePath, name of the topic to produce, number of files and number of producer instances in this node. For CUSTOM producer type, only producer script path and number of producer instances on this node are the two required parameters to specify.
-     - consumerType: consumer type can be STANDARD/CUSTOM; To use standard consumer, specify 'STANDARD'. Provided that the user has his own consumer, he can use it by specifying CUSTOM in the consumerType and give the relative path as input in producerType attribute as a pair like CUSTOM,producerFilePath
-     - consumerConfig: each consumer configuration is specified in consumerConfiguration.yaml file. In the YAML file, 
-         - for STNDARD consumer, specify the topic name where the consumer will consumer from and number of consumer instances in this node.
-         - for CUSTOM consumer, specify the consumer script path and number of consumer instances in this node.
-     - streamProcType: defines the stream processing engine type (e.g., Spark, Flink) 
-     - streamProcCfg: stream processing engine configuration. 
+   - contains component(s) configurations specified as YAML configurations
  
 ## Runnning 
  
