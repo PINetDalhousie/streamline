@@ -82,6 +82,7 @@ Y = np.repeat(Y_flat, min_length).reshape(len(Y_flat), min_length)
 fig = plt.figure() 
 ax = fig.add_subplot(111, projection='3d')
 surf = ax.plot_surface(X, Y, Z, cmap='viridis')
+# wire_frame = ax.plot_wireframe(X, Y, Z)
 
 ax.set_xlabel('Link bandwidth (Mbps)', labelpad=5, fontweight='bold', fontsize=10) 
 ax.set_ylabel('Message rate (msg/s)', labelpad=5, fontweight='bold', fontsize=10) 
@@ -89,7 +90,7 @@ ax.set_zlabel('Aggregated Throughput (Mbps)', labelpad=5, fontweight='bold', fon
 # ax.set_title('3D plot of three plots') 
 
 # Rotate the plot
-ax.view_init(elev=20, azim=-35)
+# ax.view_init(elev=30, azim=120)
 
 # plt.show()
 plt.savefig('use-cases/varying-networking-conditions/varying-link-bw/military-coordination/plots/3d-plot.pdf', format="pdf", dpi=300, bbox_inches='tight')

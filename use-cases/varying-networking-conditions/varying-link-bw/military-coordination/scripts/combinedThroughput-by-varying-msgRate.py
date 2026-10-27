@@ -13,6 +13,7 @@ import matplotlib.pyplot as plt
 from matplotlib.font_manager import FontProperties
 
 import numpy as np
+import itertools
 
 interval = 5
 inputBarDraw = 0
@@ -286,15 +287,20 @@ logDirectory = args.logDir
 scenarioStr = args.scenarioStr
 scenarioList = scenarioStr.split(',')
 
-plotIndividualPortBandwidth()           #for individual entry port plots
-print("Individual "+args.portType+" bandwidth consumption plot created")
+# plotIndividualPortBandwidth()           #for individual entry port plots
+# print("Individual "+args.portType+" bandwidth consumption plot created")
 
 clearExistingPlot()
-colorLst = ['r','g','b', 'y','k','m']
+# colorLst = ['r','g','b', 'y','k','m']
+# Define your color list
+colorLst = ['r', 'g', 'b', 'y', 'k', 'm', 'c', '#FF6347', '#8B4513', '#808080', '#2E8B57', '#ADFF2F', '#FFD700']
+# Create an infinite iterator that cycles through the colors
+color_cycle = itertools.cycle(colorLst)
+
 for index, item in enumerate(scenarioList):
     logDirectory = args.logDir + "/" + str(args.linkBW) +"Mbps/scenario-"+item + "msgPs/bandwidth/"
     # ls can be solid or dashed 
-    aggThroughputList, timeList = plotAggregatedBandwidth(scenario=int(item), label=item+" msg/s", color=colorLst[index], ls='solid', lw=3.0, cap=100.0)   # cap 9.0 can be used to discard outliers
+    aggThroughputList, timeList = plotAggregatedBandwidth(scenario=int(item), label=item+" msg/s", color=next(color_cycle), ls='solid', lw=3.0, cap=1000000.0)   # cap 9.0 can be used to discard outliers
     # store aggregated throughput data in a file
     with open(logDirectory+'aggregated-throughput.txt', 'w') as f:
         for i in range(len(aggThroughputList)):
