@@ -4,7 +4,7 @@ import os
 import string    
 import random  
 
-for i in range(1000):
+for i in range(100):
     with open("use-cases/varying-networking-conditions/varying-link-latency/word-count/MFSTDataDir/"+str(i+1)+".txt", "w") as out:
         S = 1024  # number of characters in the string.  
         # call random.choices() string module to find the string in Uppercase + numeric data.  

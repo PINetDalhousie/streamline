@@ -121,9 +121,7 @@ def spawnProducers(net, nTopics, args, prodDetailsList, topicPlace):
 			sys.exit(1)
 			
 def spawnConsumers(net, consDetailsList, topicPlace):
-
 	netNodes = {}
-
 	for node in net.hosts:
 		netNodes[node.name] = node
         
@@ -203,6 +201,39 @@ def spawnSPEClients(net, streamProcDetailsList):
 				node.popen("sudo env \"PYTHONPATH=$PYTHONPATH:.\" pyflink/bin/flink run --target local --python ../"+ speApp + " --jarfile ../dependency/jars/flink-sql-connector-kafka-1.17.1.jar" + " &", shell=True, cwd="pyflink")
 		#more elif's for more spes 
 
+def spawnSPEClusterClients(net, streamProcDetailsList):
+	print('Initializing SPE cluster clients')
+	netNodes = {}
+	for node in net.hosts:
+		netNodes[node.name] = node
+
+	for spe in streamProcDetailsList:
+		time.sleep(30)
+		
+		speNode = spe["nodeId"]
+		speApp = spe["applicationPath"]
+		speType = spe["streamProcType"]
+		print("spe node: "+speNode)
+		print("spe App: "+speApp)
+		print("spe: "+speType+" cluster")
+		print("*************************")
+
+		speID = "h"+speNode
+		node = netNodes[speID]
+
+		if speType == "Spark":
+			# initiate the master and worker nodes
+			node.popen("sudo spark/spark-3.2.1/sbin/start-master.sh", shell=True)
+			node.popen("sudo spark/spark-3.2.1/sbin/start-worker.sh spark://10.0.0."+speNode+":7077", shell=True)
+			
+			# run the application
+			node.popen("sudo spark/pyspark/bin/spark-submit --master spark://10.0.0."+speNode+":7077\
+			  --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1 "+speApp\
+				+" &", shell=True)
+		else:
+			print("Cluster support not supported except Spark. Exiting...")
+			sys.exit(1)
+			
 def spawnKafkaDataStoreConnector(net, prodDetailsList, storePath):
 	netNodes = {}
 
@@ -271,7 +302,11 @@ def runLoad(net, args, topicPlace, prodDetailsList, consDetailsList, streamProcD
 		print("Kafka-data-store connector instance created")
 
 	if args.onlyKafka == 0:
-		spawnSPEClients(net, streamProcDetailsList)
+		# starting stream processing clients
+		if args.sparkCluster == 1:
+			spawnSPEClusterClients(net, streamProcDetailsList)
+		else:
+			spawnSPEClients(net, streamProcDetailsList)
 		time.sleep(30)
 		print("SPE Clients created")
 

@@ -66,12 +66,9 @@ consumerLog = logDir + '/cons/cons-node4-instance1.log'
 
 
 producerDF = spark.read.option('inferSchema', True).option('header', True).text(producerLog)
-
 consumerDF = spark.read.option('inferSchema', True).option('header', True).text(consumerLog)
 
-
 # Processing to get the data in our desired format
-
 split_result = split("value", "INFO:")
 producerDF = producerDF.select(split_result.getItem(0).alias('timestamp'), split_result.getItem(1).alias('value'))
 
@@ -81,42 +78,49 @@ consumerDF = consumerDF.select(split_result.getItem(0).alias('timestamp'), split
 # Getting the rows mentioning the file number
 producerDF.createOrReplaceTempView('producer')
 
-producerDF = spark.sql("SELECT * FROM producer WHERE value LIKE '%File:%'")
+producerDF = spark.sql("SELECT * FROM producer WHERE value LIKE '%File has been sent%'")
 
 consumerDF.createOrReplaceTempView('consumer')
 
-consumerDF = spark.sql("SELECT * FROM consumer WHERE value LIKE '%rrrr%'")
+# consumerDF = spark.sql("SELECT * FROM consumer WHERE value LIKE '%rrrr%'")
+consumerDF = spark.sql("SELECT * FROM consumer WHERE value RLIKE 'Topic:\\s*(.*?)\\s*File:'")
 
 # Getting the number of each file that was sent along with the timestamp
 
-split_result = split("value", "File:")
-producerDF = producerDF.select(col('timestamp').alias('send_time'), split_result.getItem(0).alias('send_message'), \
-        split_result.getItem(1).alias('file'))
+# split_result = split("value", "File:")
+# producerDF = producerDF.select(col('timestamp').alias('send_time'), split_result.getItem(0).alias('send_message'), \
+#         split_result.getItem(1).alias('file'))
+producerDF = producerDF.select(
+    col('timestamp').alias('send_time'),
+    regexp_extract('value', r'Topic: (.*?);', 1).alias('topic'),
+    regexp_extract('value', r'File: (\d+)', 1).alias('file')
+)
+# producerDF.show(5,truncate=False)
 
-# producerDF.show(101,truncate=False)
+# split_result = split("value", "rrrr")
+# split_result = split("value", " Topic:\\s*(.*?)\\s*File: ")
+# consumerDF = consumerDF.select(col('timestamp').alias('receive_time'), split_result.getItem(0).alias('message'), \
+#         split_result.getItem(1).alias('file'))
 
-split_result = split("value", "rrrr")
-# split_result = split("value", "File: ")
-consumerDF = consumerDF.select(col('timestamp').alias('receive_time'), split_result.getItem(0).alias('message'), \
-        split_result.getItem(1).alias('file'))
-
+consumerDF = consumerDF.select(
+    col('timestamp').alias('receive_time'),
+    regexp_extract('value', r'FileID \d+; Message: (.*?) Topic:', 1).alias('message'),
+    regexp_extract('value', r'Topic: (.*?) File:', 1).alias('topic'),
+    regexp_extract('value', r'File: (\d+)', 1).alias('file')
+)
 # We get the first instance of each file in the consumer log
 
 consumerDF.createOrReplaceTempView('cons')
-
 consumerDF = spark.sql("SELECT file, FIRST(receive_time) AS receive_time, FIRST(message) AS receive_message \
-        FROM cons GROUP BY file")
+        FROM cons GROUP BY file, topic")
 
 # consumerDF.show(101,truncate=False)
 
 # # Now we combine the two dataframes in preparation for calculating the latency
-
 combinedDF = producerDF.join(consumerDF, producerDF.file == consumerDF.file)
-# combinedDF.show(101,truncate=False)
-
+# combinedDF.show(5,truncate=False)
 
 # Selecting the desired columns from the combined dataframe
-
 combinedDF = combinedDF.select('cons.file', regexp_replace('send_time', ',', '.').alias('send_time'), \
         regexp_replace('receive_time', ',', '.').alias('receive_time'))
 
@@ -188,31 +192,30 @@ sortedFiles, sortedLatency = [ list(tuple) for tuple in  tuples]
 # showing average as a horizontal line
 latencySum = p.sum(sortedLatency)
 averageLatency = float(latencySum/len(sortedFiles))
-print('Average latency: '+str(averageLatency))
-plt.axhline(y=averageLatency, color='r', linestyle='-')
+print('Average latency: '+str(averageLatency)+' ms')
 
+# plt.axhline(y=averageLatency, color='r', linestyle='-')
+# plt.xlabel('File ID')
+# plt.ylabel('Latency in miliseconds')
+# plt.title('Latency Per File')
 
-plt.xlabel('File ID')
-plt.ylabel('Latency in miliseconds')
-plt.title('Latency Per File')
+# # plot X axis values at a interval
+# plt.xticks(range(0,1005,100))
+# plt.scatter(sortedFiles, sortedLatency)
 
-# plot X axis values at a interval
-plt.xticks(range(0,1005,100))
-plt.scatter(sortedFiles, sortedLatency)
+# print(*files)
+# print(*latency)
+# plt.scatter(files, latency)
 
-print(*files)
-print(*latency)
-plt.scatter(files, latency)
+# plotLink = 'varying-H2-S-link-only-noSleep'
+# plotLinkLatency = '100ms'
+# #plt.show()
+# plt.savefig(logDir+'/'+ plotLinkLatency +'-latency.png')
 
-plotLink = 'varying-H2-S-link-only-noSleep'
-plotLinkLatency = '100ms'
-#plt.show()
-plt.savefig(logDir+'/'+ plotLinkLatency +'-latency.png')
+# clearExistingPlot()
 
-clearExistingPlot()
-
-# Plot CDF of latency
-plotUtilizationCDF(logDir, sortedFiles, sortedLatency)
+# # Plot CDF of latency
+# plotUtilizationCDF(logDir, sortedFiles, sortedLatency)
 
 # time.sleep(5)
 
