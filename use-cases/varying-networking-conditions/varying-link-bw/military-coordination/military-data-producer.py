@@ -84,7 +84,7 @@ try:
 	
 	tClass = 1.0
 	mSizeString = 'fixed,10'
-	mRate = 30 #1.0
+	mRate = 12000
 	nTopics = 2
 
 	acks = 1
@@ -120,7 +120,8 @@ try:
 
 	logging.info("**Configuring KafkaProducer** bootstrap_servers=" + str(bootstrapServers) + 
 		" acks=" + str(acks) + " compression_type=" + str(compression) + " batch_size=" + str(batchSize) + 
-		" linger_ms=" + str(linger) + " request_timeout_ms=" + str(requestTimeout))
+		" linger_ms=" + str(linger) + " request_timeout_ms=" + str(requestTimeout) +
+		" message_rate=" + str(mRate))
 
 
 	if(compression == 'None'):
