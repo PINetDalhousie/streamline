@@ -18,7 +18,7 @@
   <graph id="simple-topo" edgedefault="undirected">
 
     <node id="h1">
-      <data key="streamProcType">Spark</data>
+      <data key="streamProcType">Flink</data>
       <data key="streamProcCfg">use-cases/app-testing/fraud-detection/flink-fraud-detection/yamlConfig/spe-fraud-detection.yaml</data>
 	  </node>            
     

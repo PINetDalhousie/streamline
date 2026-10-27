@@ -31,46 +31,35 @@ We let this command run for 3 minutes. After that, we opened data.json and delet
 
 
 ## Queries  
-    vessel = vessel.filter( col("type") == 5).select("timestamp", "destination", "shiptype","shiptype_text", "mmsi")
+    filtered_table = table.filter("type == 5").select("timestamp, destination, shiptype, shiptype_text, mmsi")
 
-    query = vessel.groupBy(window("timestamp", "1 minute"), "destination", "shiptype")\
-            .agg(approx_count_distinct("mmsi").alias("numberOfShips"),\
-            collect_set("mmsi").alias("shipIDs"))
+    result = filtered_table.window(Tumble.over("1.minute").on("timestamp").alias("w")) \
+        .group_by("w, destination, shiptype") \
+        .select("w.start as start, w.end as end, destination, shiptype, count(mmsi) as numberOfShips, collect(mmsi) as shipIDs")
 
   
 ## Operations
     Selection
     Projection
     Windowed aggregation
-    Foreach implementation
+    Stream to table conversion
+    User-defined function
 
   
 ## Input details
 1. data.json : contains input data
-2. topicConfiguration.yaml :
-   - contains topic configurations
-     - specify topic name ('topicName')
-     - specify broker ID to initiate this topic ('topicBroker')
-     - number of partition(s) in this topic ('topicPartition')
-     - number of replica(s) in this topic ('topicReplica')
-3. maritime.py : Apache Flink application
+2. yamlConfig directory [Check configuration parameters here](/documentation/config-parameters.pdf)
+   - broker.yaml : contains broker(s) configuration
+   - topicConfiguration.yaml : contains topic(s) configuration
+   - producerConfiguration.yaml : contains producer(s) configuration
+   - consumerConfiguration.yaml : contains consumer(s) configuration
+   - spe.yaml : contains strea processing (Flink) application configuration
+3. maritime.py: Flink application
 4. input.graphml:
    - contains topology description
      - node details (switch, host)
      - edge details (bandwidth, latency, source port, destination port)
-   - contains component(s) configurations 
-     - topicConfig : path to the topic configuration file
-     - zookeeper : 1 = hostnode contains a zookeeper instance
-     - broker : 1 = hostnode contains a zookeeper instance
-     - producerType: producer type can be SFST/MFMT/ELTT/CUSTOM; SFST denotes from Single File to Single Topic. ELTT is defined when Each line To Topic i.e. each line of the file is produced to the topic as a single message. For SFST/MFMT/ELTT, a standard producer will work be default.Provided that the user has his own producer, he can use it by specifying CUSTOM in the producerType and give the relative path as input in producerType attribute as a pair of producerType,producerFilePath.
-     - producerConfig: specified in producerConfiguration.yaml
-          for SFST/ELTT, user needs to specify filePath, name of the topic to produce, number of files and number of producer instances in this node. For CUSTOM producer type, only producer script path and number of producer instances on this node are the two required parameters to specify.
-     - consumerType: consumer type can be STANDARD/CUSTOM; To use standard consumer, specify 'STANDARD'. Provided that the user has his own consumer, he can use it by specifying CUSTOM in the consumerType and give the relative path as input in producerType attribute as a pair like CUSTOM,producerFilePath
-     - consumerConfig: each consumer configuration is specified in ''consumerConfiguration<HostID>.yaml' file. In the YAML file, 
-         - for STNDARD consumer, specify the topic name where the consumer will consumer from and number of consumer instances in this node.
-         - for CUSTOM consumer, specify the consumer script path and number of consumer instances in this node.
-     - streamProcType: can either be Spark/Flink.
-     - streamProcConfig: streamProcConfig will contain the application path and output sink. Output sink can be kafka topic/a file directory.
+   - contains component(s) configurations specified as YAML configurations
 
 ## Running
 ```sudo python3 main.py use-cases/app-testing/maritime-monitoring/flink-maritime-monitoring input.graphml```
