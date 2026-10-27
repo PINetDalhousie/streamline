@@ -196,7 +196,7 @@ def spawnSPEClients(net, streamProcDetailsList):
 			node.popen("sudo spark/pyspark/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.2.1 "+speApp\
 					+" &", shell=True)
 		elif speType == "Flink":
-			node.popen("sudo python "+ speApp + " --jarfile dependency/jars/flink-sql-connector-kafka-1.17.1.jar" + " &", shell=True)
+			node.popen("sudo bin/flink run --target local --python ../"+ speApp + " --jarfile ../dependency/jars/flink-sql-connector-kafka-1.17.1.jar" + " &", shell=True, cwd="pyflink")
 		#more elif's for more spes 
 
 def spawnKafkaDataStoreConnector(net, prodDetailsList, storePath):
