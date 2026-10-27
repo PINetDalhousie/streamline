@@ -18,7 +18,6 @@ while i<= numberOfConsumers:
         msgIDList = []
         msgTimeList = []
         for row in lines:
-            # print('inside for loop')
             if word in row:
                 msgTime = row.split('INFO')[0].strip() 
                 msgID = row.split(word)[1].strip()
