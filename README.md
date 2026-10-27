@@ -1,4 +1,4 @@
-# stream2gym
+# streamline
 
 Tool for fast prototyping of distributed stream processing applications.
 
@@ -8,9 +8,9 @@ The tool was tested on Ubuntu 18.04, 20.04.4, and 22.04. It is based on Python 3
 
 1. Clone the repository, then enter into it.
 
-```git clone https://github.com/PINetDalhousie/stream2gym.git```
+```git clone https://github.com/PINetDalhousie/streamline.git```
 
-```cd stream2gym```
+```cd streamline```
 
 2. Install dependencies. Our tool depends on the following software:
 
@@ -30,6 +30,8 @@ The tool was tested on Ubuntu 18.04, 20.04.4, and 22.04. It is based on Python 3
   Most dependencies can be installed using `apt install` and `pip3 install`:
   
   ```bash
+  $ sudo wget -P kafka https://archive.apache.org/dist/kafka/2.8.2/kafka_2.13-2.8.2.tgz && sudo tar -xvf kafka/kafka_2.13-2.8.2.tgz -C kafka/ && sudo cp -R kafka/kafka_2.13-2.8.2/* kafka/ && sudo rm kafka/kafka_2.13-2.8.2.tgz && sudo rm -rf kafka/kafka_2.13-2.8.2
+
   $ sudo apt install python3-pip mininet default-jdk xterm netcat
   
   $ sudo pip3 install mininet networkx kafka-python matplotlib python-snappy lz4 seaborn pyyaml seaborn
@@ -45,7 +47,7 @@ The tool was tested on Ubuntu 18.04, 20.04.4, and 22.04. It is based on Python 3
   
   ## Sample command lines
   
-  1) Navigate through the ```use-cases/``` directory to explore the diverse applications we tested using stream2gym.  Details of the applications including the exact data processing pipeline, topology, executed queries, and platform configurations can be found inside respective application directory. Example command to test a streaming data analytics application in a small network: 
+  1) Navigate through the ```use-cases/``` directory to explore the diverse applications we tested using streamline.  Details of the applications including the exact data processing pipeline, topology, executed queries, and platform configurations can be found inside respective application directory. Example command to test a streaming data analytics application in a small network: 
   
   ```sudo python3 main.py use-cases/app-testing/document-analytics/input.graphml```
   
@@ -63,4 +65,4 @@ The tool was tested on Ubuntu 18.04, 20.04.4, and 22.04. It is based on Python 3
 
   ```sudo python3 main.py use-cases/reproducibility/input.graphml --only-spark 1```
 
-  6) Explore the stream2gym supported configuration parameters in ```documentation/config-parameters.pdf```. Setup parameters as you need and quickly test your prototype in a distributed emulated environment.
+  6) Explore the streamline supported configuration parameters in ```documentation/config-parameters.pdf```. Setup parameters as you need and quickly test your prototype in a distributed emulated environment.
