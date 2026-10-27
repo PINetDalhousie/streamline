@@ -39,5 +39,6 @@ $ sudo apt install python3-pcapy
 
 ## Runnning (Spark cluster mode) 
  To run application in a spark cluster mode
+  
   ```sudo python3 main.py use-cases/reproducibility/networkTrafficAnalysis/input-cluster.graphml --time 300```
  
