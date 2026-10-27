@@ -230,8 +230,8 @@ def readConfigParams(net, args):
 					brokerType = data['brokerType']
 				if 'brokerConfig' in data: 
 					brokerConfig = data["brokerConfig"]
-				brokerDetails = readBrokerConfig(brokerType, brokerConfig, nodeID)
-				brokerPlace.append(brokerDetails)
+					brokerDetails = readBrokerConfig(brokerType, brokerConfig, nodeID)
+					brokerPlace.append(brokerDetails)
 				if 'producerType' in data: 
 					producerType = data["producerType"]
 					prodDetails = readProdConfig(data["producerConfig"], producerType, nodeID)

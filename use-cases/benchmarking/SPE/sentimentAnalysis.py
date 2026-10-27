@@ -1,0 +1,90 @@
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import *
+from pyspark.sql.types import *
+from pyspark.sql import functions as F
+from textblob import TextBlob
+import time
+import sys
+import logging
+
+def preprocessing(lines):
+    words = lines.select(explode(split(lines.value, "t_end")).alias("word"))
+    words = words.na.replace('', None)
+    words = words.na.drop()
+    words = words.withColumn('word', F.regexp_replace('word', r'http\S+', ''))
+    words = words.withColumn('word', F.regexp_replace('word', '@\w+', ''))
+    words = words.withColumn('word', F.regexp_replace('word', '#', ''))
+    words = words.withColumn('word', F.regexp_replace('word', 'RT', ''))
+    words = words.withColumn('word', F.regexp_replace('word', ':', ''))
+    return words
+
+# text classification
+def polarity_detection(text):
+    return TextBlob(text).sentiment.polarity
+def subjectivity_detection(text):
+    return TextBlob(text).sentiment.subjectivity
+def text_classification(words):
+    # polarity detection
+    polarity_detection_udf = udf(polarity_detection, StringType())
+    words = words.withColumn("polarity", polarity_detection_udf("word"))
+    # subjectivity detection
+    subjectivity_detection_udf = udf(subjectivity_detection, StringType())
+    words = words.withColumn("subjectivity", subjectivity_detection_udf("word"))
+    return words
+
+if __name__ == "__main__":
+    try:        
+        kafkaNode = "10.0.0.1:9092"
+        sparkInputFrom = "topic-0"
+
+        logging.basicConfig(filename="logs/output/spark1.log",\
+		                    format='%(asctime)s %(levelname)s:%(message)s',\
+                            level=logging.INFO)
+        logging.info("node: 1")
+        logging.info("input: "+sparkInputFrom)
+
+        # create Spark session
+        spark = SparkSession.builder.appName("TwitterSentimentAnalysis").getOrCreate()
+        spark.sparkContext.setLogLevel('ERROR')
+        
+        # Create DataFrame representing the stream of input lines from connection to host:port
+        lines = spark\
+            .readStream\
+            .format('kafka')\
+            .option('kafka.bootstrap.servers', kafkaNode) \
+            .option("startingOffsets", "earliest")\
+            .option("failOnDataLoss", False)\
+            .option('subscribe', sparkInputFrom)\
+            .load()\
+            .selectExpr("CAST(value AS STRING)")
+
+
+        # Preprocess the data
+        words = preprocessing(lines)
+        # text classification to define polarity and subjectivity
+        words = text_classification(words)
+
+        words = words.repartition(1)
+        
+        # sink to CSV file
+        # output = words.writeStream.queryName("all_tweets")\
+        #     .format("csv")\
+        #     .option("path", sparkOutputTo+"/sentiment-analysis-result")\
+        #     .option("checkpointLocation", sparkOutputTo+"/sentiment-analysis-checkpoint")\
+        #     .start()
+        #     # .trigger(processingTime='60 seconds').start()
+
+        # sink to kafka
+        sparkOutputTo = 'topic-1'
+        logging.info("output: "+sparkOutputTo)
+        output = words.writeStream \
+            .format("kafka") \
+            .option("kafka.bootstrap.servers", kafkaNode) \
+            .option("topic", sparkOutputTo) \
+            .option("checkpointLocation", "logs/output/wordcount_checkpoint_intermediate") \
+            .start()
+        output.awaitTermination(50)
+        output.stop()
+
+    except Exception as e:
+        sys.exit(1)

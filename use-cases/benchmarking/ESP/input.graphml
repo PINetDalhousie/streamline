@@ -25,7 +25,7 @@
   
    
   <graph id="simple-topo" edgedefault="undirected">
-    <data key="topicCfg">use-cases/benchmarking/yamlConfig/topicConfiguration.yaml</data>
+    <data key="topicCfg">use-cases/benchmarking/ESP/yamlConfig/topicConfiguration.yaml</data>
 
     <node id="s1"/>
     <node id="s2"/>
@@ -43,90 +43,90 @@
       <data key="rMQBroker">1</data>
       
       <data key="prodType">CUSTOM</data>
-      <data key="prodCfg">use-cases/benchmarking/yamlConfig/producerConfiguration.yaml</data>
+      <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
       <data key="consType">CUSTOM</data>
-      <data key="consCfg">use-cases/benchmarking/yamlConfig/consumerConfiguration.yaml</data>
+      <data key="consCfg">use-cases/benchmarking/ESP/yamlConfig/consumerConfiguration.yaml</data>
 	  </node>
     
     <node id="h2">
       <data key="rMQBroker">1</data>
       
       <data key="prodType">CUSTOM</data>
-      <data key="prodCfg">use-cases/benchmarking/yamlConfig/producerConfiguration.yaml</data>
+      <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
       <data key="consType">CUSTOM</data>
-      <data key="consCfg">use-cases/benchmarking/yamlConfig/consumerConfiguration.yaml</data>
+      <data key="consCfg">use-cases/benchmarking/ESP/yamlConfig/consumerConfiguration.yaml</data>
 	  </node>   
 
     <node id="h3">   
       <data key="rMQBroker">1</data>
       
       <data key="prodType">CUSTOM</data>
-      <data key="prodCfg">use-cases/benchmarking/yamlConfig/producerConfiguration.yaml</data>
+      <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
       <data key="consType">CUSTOM</data>
-      <data key="consCfg">use-cases/benchmarking/yamlConfig/consumerConfiguration.yaml</data>
+      <data key="consCfg">use-cases/benchmarking/ESP/yamlConfig/consumerConfiguration.yaml</data>
 	  </node>
 
     <node id="h4">   
       <data key="rMQBroker">1</data>
       
       <data key="prodType">CUSTOM</data>
-      <data key="prodCfg">use-cases/benchmarking/yamlConfig/producerConfiguration.yaml</data>
+      <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
       <data key="consType">CUSTOM</data>
-      <data key="consCfg">use-cases/benchmarking/yamlConfig/consumerConfiguration.yaml</data>
+      <data key="consCfg">use-cases/benchmarking/ESP/yamlConfig/consumerConfiguration.yaml</data>
 	  </node>
 
     <node id="h5">   
       <data key="rMQBroker">1</data>
       
       <data key="prodType">CUSTOM</data>
-      <data key="prodCfg">use-cases/benchmarking/yamlConfig/producerConfiguration.yaml</data>
+      <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
       <data key="consType">CUSTOM</data>
-      <data key="consCfg">use-cases/benchmarking/yamlConfig/consumerConfiguration.yaml</data>
+      <data key="consCfg">use-cases/benchmarking/ESP/yamlConfig/consumerConfiguration.yaml</data>
 	  </node>
 
     <node id="h6">   
       <data key="rMQBroker">1</data>
       
       <data key="prodType">CUSTOM</data>
-      <data key="prodCfg">use-cases/benchmarking/yamlConfig/producerConfiguration.yaml</data>
+      <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
       <data key="consType">CUSTOM</data>
-      <data key="consCfg">use-cases/benchmarking/yamlConfig/consumerConfiguration.yaml</data>
+      <data key="consCfg">use-cases/benchmarking/ESP/yamlConfig/consumerConfiguration.yaml</data>
 	  </node>
 
     <node id="h7">   
       <data key="rMQBroker">1</data>
       
       <data key="prodType">CUSTOM</data>
-      <data key="prodCfg">use-cases/benchmarking/yamlConfig/producerConfiguration.yaml</data>
+      <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
       <data key="consType">CUSTOM</data>
-      <data key="consCfg">use-cases/benchmarking/yamlConfig/consumerConfiguration.yaml</data>
+      <data key="consCfg">use-cases/benchmarking/ESP/yamlConfig/consumerConfiguration.yaml</data>
 	  </node>
 
     <node id="h8">
       <data key="rMQBroker">1</data>
       
       <data key="prodType">CUSTOM</data>
-      <data key="prodCfg">use-cases/benchmarking/yamlConfig/producerConfiguration.yaml</data>
+      <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
       <data key="consType">CUSTOM</data>
-      <data key="consCfg">use-cases/benchmarking/yamlConfig/consumerConfiguration.yaml</data>
+      <data key="consCfg">use-cases/benchmarking/ESP/yamlConfig/consumerConfiguration.yaml</data>
 	  </node>
 
     <node id="h9">   
       <data key="rMQBroker">1</data>
       
       <data key="prodType">CUSTOM</data>
-      <data key="prodCfg">use-cases/benchmarking/yamlConfig/producerConfiguration.yaml</data>
+      <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
       <data key="consType">CUSTOM</data>
-      <data key="consCfg">use-cases/benchmarking/yamlConfig/consumerConfiguration.yaml</data>
+      <data key="consCfg">use-cases/benchmarking/ESP/yamlConfig/consumerConfiguration.yaml</data>
 	  </node>
 
     <node id="h10">
       <data key="rMQBroker">1</data>
       
       <data key="prodType">CUSTOM</data>
-      <data key="prodCfg">use-cases/benchmarking/yamlConfig/producerConfiguration.yaml</data>
+      <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
       <data key="consType">CUSTOM</data>
-      <data key="consCfg">use-cases/benchmarking/yamlConfig/consumerConfiguration.yaml</data>
+      <data key="consCfg">use-cases/benchmarking/ESP/yamlConfig/consumerConfiguration.yaml</data>
 	  </node>
   
 

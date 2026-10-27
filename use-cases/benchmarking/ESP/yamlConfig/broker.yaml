@@ -1,0 +1,4 @@
+# broker configuration file
+---
+  filePath: use-cases/benchmarking/ESP/config/config.ini
+...
