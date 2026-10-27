@@ -166,7 +166,12 @@ sortedFiles, sortedLatency = [ list(tuple) for tuple in  tuples]
 latencySum = p.sum(sortedLatency)
 averageLatency = float(latencySum/len(sortedFiles))
 print('Average latency: '+str(averageLatency)+' ms')
-plt.axhline(y=averageLatency, color='r', linestyle='-')
+
+# showing average latency in the horizontal line
+fig = plt.figure()
+ax = fig.add_subplot(111)
+ax.text(1.02,averageLatency, str(averageLatency),transform=ax.get_yaxis_transform())
+ax.axhline(y=averageLatency, color='r', linestyle='-')
 
 
 plt.xlabel('File ID')

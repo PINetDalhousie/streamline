@@ -24,7 +24,8 @@ use-cases/varying-networking-conditions/varying-link-latency/word-count/simulati
 use-cases/varying-networking-conditions/varying-link-latency/word-count/MFSTDataDir/
 use-cases/varying-networking-conditions/varying-link-latency/word-count/input-original.graphml
 # use-cases/varying-networking-conditions/varying-link-latency/word-count/yamlConfig/producerConfiguration-temp.yaml
-use-cases/varying-networking-conditions/varying-link-bw/word-count/MFSTDataDir/
 tempScript.py
 use-cases/app-testing/document-analytics/demo/
 use-cases/varying-networking-conditions/varying-link-bw/military-coordination/logs/
+use-cases/varying-networking-conditions/varying-link-bw/word-count/MFSTDataDir/
+use-cases/varying-networking-conditions/varying-link-bw/word-count/logs/
