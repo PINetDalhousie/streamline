@@ -34,7 +34,8 @@ class ProducerLog():
 		allProducerData = []
 
 		for prodID in range(numProducers):
-			prodData = self.getProdData(prodDir+'prod-'+str(prodID+1)+'.log', prodID+1)
+			prodData = self.getProdData(prodDir+'prod-node'+str(prodID+1)\
+										+'-instance1.log', prodID+1)
 			allProducerData.append(prodData)
 
 		return allProducerData
@@ -98,7 +99,8 @@ class ConsumerLog():
 		allConsumerData = []
 
 		for consID in range(numConsumers):
-			consData = self.getConsData(consDir+'cons-'+str(consID+1)+'.log', consID+1)
+			# consData = self.getConsData(consDir+'cons-'+str(consID+1)+'.log', consID+1)
+			consData = self.getConsData(consDir+'cons-node3-instance1.log', consID+1)
 			allConsumerData.append(consData)
 
 		return allConsumerData
