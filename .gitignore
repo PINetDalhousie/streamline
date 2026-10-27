@@ -21,21 +21,15 @@ use-cases/app-testing/document-analytics/yamlConfig/consumerConfigurationHost1.y
 use-cases/app-testing/document-analytics/yamlConfig/consumerConfigurationHost2.yaml
 use-cases/app-testing/document-analytics/yamlConfig/consumerConfigurationHost3.yaml
 use-cases/varying-networking-conditions/varying-link-latency/word-count/testbedResults/
-# use-cases/varying-networking-conditions/varying-link-latency/word-count/testbedScripts/
 use-cases/varying-networking-conditions/varying-link-latency/word-count/simulationResults/
-# use-cases/varying-networking-conditions/varying-link-latency/word-count/simulationScripts/
 use-cases/varying-networking-conditions/varying-link-latency/word-count/MFSTDataDir/
 use-cases/varying-networking-conditions/varying-link-latency/word-count/input-original.graphml
-# use-cases/varying-networking-conditions/varying-link-latency/word-count/yamlConfig/producerConfiguration-temp.yaml
-tempScript.py
 use-cases/app-testing/document-analytics/demo/
 use-cases/varying-networking-conditions/varying-link-bw/military-coordination/logs/
 use-cases/varying-networking-conditions/varying-link-bw/word-count/MFSTDataDir/
 use-cases/varying-networking-conditions/varying-link-bw/word-count/logs/
 use-cases/varying-networking-conditions/varying-packet-loss/military-coordination/logs/
 evaluation/accuracy-analysis/military-coordination/logs
-# use-cases/varying-networking-conditions/varying-link-bw/military-coordination/scripts/3d-plot.py
-# use-cases/varying-networking-conditions/varying-link-bw/military-coordination/plots/3d-plot.png
 evaluation/accuracy-analysis/cpu-intensive-app/
 spark/spark-3.2.1/
 spark/pyspark/
@@ -58,4 +52,5 @@ use-cases/varying-networking-conditions/varying-link-latency/word-count/simulati
 use-cases/varying-networking-conditions/varying-packet-loss/military-coordination/plots/
 use-cases/varying-networking-conditions/varying-packet-loss/military-coordination/scripts/
 evaluation/accuracy-analysis/military-coordination/plots/
-evaluation/accuracy-analysis/military-coordination/scripts/
+evaluation/accuracy-analysis/military-coordination/scripts/\
+testbed-results/
