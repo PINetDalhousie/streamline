@@ -25,6 +25,7 @@
    
   <graph id="simple-topo" edgedefault="undirected">
     <data key="topicCfg">use-cases/reproducibility/networkTrafficAnalysis/topicConfiguration.txt</data>
+    <!-- <data key="topicCfg">use-cases/reproducibility/networkTrafficAnalysis/topicConfiguration.yaml</data> -->
 
     <node id="s1"/>
 
