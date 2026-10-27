@@ -2,7 +2,12 @@
 
 Tool for fast prototyping of distributed stream processing applications.
 
-The tool was tested on Ubuntu 18.04, 20.04.4, and 22.04. It is based on Python 3.8.10, Kafka 2.13-2.8.0, Apache Spark 3.2.1, Apache Flink 1.17.1 and MySQL 8.0.30.
+The tool was tested on Ubuntu jammy (22.04LTS). It is based on Python 3.8.10 and supports the following tools:
+- Apache Kafka 2.13-2.8.0
+- RabbitMQ 3.9.13
+- Apache Spark 3.2.1
+- Apache Flink 1.17.1
+- MySQL 8.0.30
 
 ## Getting started
 
@@ -38,6 +43,13 @@ The tool was tested on Ubuntu 18.04, 20.04.4, and 22.04. It is based on Python 3
   $ python -m pip install --target pyflink apache-flink==1.17.1
   
   $ sudo pip3 install --target spark/pyspark pyspark==3.2.1
+  ```
+
+  For RabbitMQ support, do the following:
+  ```bash
+  $ sudo apt install -y rabbitmq-server
+  $ sudo python3 -m pip install pika --upgrade
+  $ sudo cp config/*.conf /etc/rabbitmq/
   ```
 
   3. You are ready to go! Should be able to get help using:
