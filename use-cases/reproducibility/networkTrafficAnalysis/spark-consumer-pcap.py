@@ -32,46 +32,42 @@ try:
                 .format("kafka") \
                 .option("kafka.bootstrap.servers", kafka_bootstrap_servers) \
                 .option("subscribe", sparkInputFrom) \
-                .load()
+                .load().selectExpr("CAST(value AS STRING)")
 
 
-        pkt_df1 = pkt_df.selectExpr("CAST(value AS STRING)", "timestamp")
+        # pkt_df1 = pkt_df.selectExpr("CAST(value AS STRING)", "timestamp")
 
-        logging.info("dataframe: ")
-        logging.info(pkt_df1.isStreaming)
-        logging.info("schema: ")
-        logging.info(pkt_df1.printSchema())
+        # logging.info("dataframe: ")
+        # logging.info(pkt_df1.isStreaming)
+        # logging.info("schema: ")
+        # logging.info(pkt_df1.printSchema())
 
-        pkt_schema_string = "nodeID INT, prodInstanceID INT, flowCount INT,\
-                pktCount INT,srcIP STRING,dstIP STRING, \
-                proto INT, srcPort STRING, dstPort STRING,payloadLength INT, \
-                payload STRING" 
+        # pkt_schema_string = "nodeID INT, prodInstanceID INT, flowCount INT,\
+        #         pktCount INT,srcIP STRING,dstIP STRING, \
+        #         proto INT, srcPort STRING, dstPort STRING,payloadLength INT, \
+        #         payload STRING" 
 
-        pkt_df2 = pkt_df1 \
-                .select(from_csv(col("value"), pkt_schema_string) \
-                        .alias("pkt"), "timestamp")
+        # pkt_df2 = pkt_df1 \
+        #         .select(from_csv(col("value"), pkt_schema_string) \
+        #                 .alias("pkt"), "timestamp")
 
-        pkt_df3 = pkt_df2.select("pkt.*", "timestamp")
+        # pkt_df3 = pkt_df2.select("pkt.*", "timestamp")
 
-        # groupedDf = pkt_df.selectExpr("CAST(value AS STRING)")
+        # specifiSrcIPDf = pkt_df3.filter( col("srcIP") == "192.168.1.11")\
+        #         .select("nodeID", "prodInstanceID", "flowCount", "pktCount", "srcIP", "dstIP","proto", "srcPort", "dstPort",\
+        #                 "payloadLength", "payload")
 
-        # implementation of group by destination ip
-        # specifiSrcIPDf = pkt_df3.filter( col("src_ip") == "131.202.240.87")\
-        #         .select("count", "src_ip", "dst_ip","proto")
-        specifiSrcIPDf = pkt_df3.filter( col("srcIP") == "192.168.1.11")\
-                .select("nodeID", "prodInstanceID", "flowCount", "pktCount", "srcIP", "dstIP","proto", "srcPort", "dstPort",\
-                        "payloadLength", "payload")
+        # groupedDf = specifiSrcIPDf.groupBy('dstIP', 'nodeID', "prodInstanceID").count()
+        # groupedDf = groupedDf.select( concat( lit(' Producer Node: '), 'nodeID',\
+        #         lit(' user: '), 'prodInstanceID',\
+        #         lit(' destination IP: '), 'dstIP',\
+        #         lit(' IP Counts: '), 'count').alias('value') )
 
-        groupedDf = specifiSrcIPDf.groupBy('dstIP', 'nodeID', "prodInstanceID").count()
-        groupedDf = groupedDf.select( concat( lit(' Producer Node: '), 'nodeID',\
-                lit(' user: '), 'prodInstanceID',\
-                lit(' destination IP: '), 'dstIP',\
-                lit(' IP Counts: '), 'count').alias('value') )
-
-        query = groupedDf.writeStream \
+        # query = groupedDf.writeStream \
+        query = pkt_df.writeStream \
         .trigger(processingTime='1 seconds')\
         .format("kafka") \
-        .outputMode("complete")\
+        .outputMode("append")\
         .option("kafka.bootstrap.servers", kafka_bootstrap_servers) \
         .option("topic", sparkOutputTo) \
         .option("checkpointLocation", "logs/output/wordcount_checkpoint_final") \
