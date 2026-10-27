@@ -3,8 +3,12 @@ kafka/logs/
 logs/
 data/
 analyses/
-kafka/kafka?/
-kafka/zookeeper?/
+kafka/kafka*/
+kafka/zookeeper*/
+kafka/config/server*.properties
+!kafka/config/server.properties
+kafka/config/zookeeper*.properties
+!kafka/config/zookeeper.properties
 tests/input/
 use-cases/app-testing/fraud-detection/training.csv
 use-cases/app-testing/maritime-monitoring/maritime-mysql-bulk-sink.properties
@@ -33,3 +37,4 @@ use-cases/varying-networking-conditions/varying-packet-loss/military-coordinatio
 evaluation/accuracy-analysis/military-coordination/logs
 # use-cases/varying-networking-conditions/varying-link-bw/military-coordination/scripts/3d-plot.py
 # use-cases/varying-networking-conditions/varying-link-bw/military-coordination/plots/3d-plot.png
+evaluation/accuracy-analysis/cpu-intensive-app/
