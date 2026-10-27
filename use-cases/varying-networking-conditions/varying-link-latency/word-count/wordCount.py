@@ -42,15 +42,6 @@ try:
         .option('subscribe', sparkInputFrom)\
         .load().selectExpr("CAST(value AS STRING)")
 
-    #Use of Kafka topic as a sink
-    output = lines.writeStream \
-    .format("kafka") \
-    .option("kafka.bootstrap.servers", kafkaNode) \
-    .option("topic", sparkOutputTo) \
-    .option("checkpointLocation", "logs/output/wordcount_checkpoint_intermediate") \
-    .start()
-    output.awaitTermination()
-
     # # Separating the data to get the file number on one side and the words on the other
     # split_result = split("value", " File: ")
     # lines = lines.select(split_result.getItem(0).alias('value'), split_result.getItem(1).alias('file'))
@@ -77,18 +68,15 @@ try:
 
     # logging.info(result.printSchema())
 
-    # #Use of Kafka topic as a sink
-    # output = result.writeStream \
-    # .outputMode("complete")\
-    # .format("kafka") \
-    # .option("kafka.bootstrap.servers", kafkaNode) \
-    # .option("topic", sparkOutputTo) \
-    # .option("checkpointLocation", "logs/output/wordcount_checkpoint_intermediate") \
-    # .start()
-    # output.awaitTermination()
+    #Use of Kafka topic as a sink
+    output = lines.writeStream \
+    .format("kafka") \
+    .option("kafka.bootstrap.servers", kafkaNode) \
+    .option("topic", sparkOutputTo) \
+    .option("checkpointLocation", "logs/output/wordcount_checkpoint_intermediate") \
+    .start()
+    output.awaitTermination()
 
 except Exception as e:
 	logging.error(e)
 	sys.exit(1)
-
-

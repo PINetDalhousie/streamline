@@ -1,7 +1,7 @@
 # Word count
 
-In this application, we facilated the running word-count application using a two Spark structured streaming(SS) applications chain. We use two Kafka topic respectively for input source and output sink. In the first application, textual data is ingested from one kafka topic to another via spark structured stream. The second application splits each line into words, generates running word count on those words and lastly, store the calculated value at a local file.
-
+Word count is a standard benchmarking application for stream processing systems. It collects textual data from a
+stream of files, splits it into words, and stores word fre-quencies into another file. At the end of text split and fre-quency counting of words, results stored to a Kafka topic.
 
 ## Architecture
 
