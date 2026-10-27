@@ -41,7 +41,7 @@
 
     <node id="h3">   
       <data key="streamProcType">Flink</data>
-      <data key="streamProcCfg">use-cases/app-testing/word-count/flink-word-count/yamlConfig/spe-flink.yaml</data>
+      <data key="streamProcCfg">use-cases/app-testing/word-count/flink-word-count/yamlConfig/spe-1.yaml</data>
 	  </node>
 
     <node id="h4">
