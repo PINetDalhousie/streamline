@@ -2,7 +2,7 @@
 
 Tool for fast prototyping of distributed stream processing applications.
 
-The tool was tested on Ubuntu 20.04.4 and is based on Python 3.8.10, Kafka 2.13-2.8.0, PySpark 3.2.1 and MySQL 8.0.30.
+The tool was tested on Ubuntu 20.04.4 and is based on Python 3.8.10, Kafka 2.13-2.8.0, PySpark 3.2.1, Flink 1.17.1 and MySQL 8.0.30.
 
 ## Getting started
 
@@ -31,6 +31,9 @@ The tool was tested on Ubuntu 20.04.4 and is based on Python 3.8.10, Kafka 2.13-
   
   $ sudo pip3 install mininet networkx kafka-python matplotlib python-snappy lz4 seaborn pyyaml seaborn
   ```
+  For Flink dependencies to be installed, must run the script in flink-use:
+  ``` python flink-use/use-flink.py ```
+
   3. You are ready to go! Should be able to get help using:
 
   ```sudo python3 main.py -h```
