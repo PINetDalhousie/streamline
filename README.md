@@ -89,3 +89,28 @@ The tool was tested on Ubuntu jammy (22.04LTS). It is based on Python 3.8.10 and
   ```sudo python3 main.py use-cases/reproducibility/networkTrafficAnalysis/input-cluster.graphml --time 300```
   
   7) Explore the streamline supported configuration parameters in ```documentation/config-parameters.pdf```. Setup parameters as you need and quickly test your prototype in a distributed emulated environment.
+
+## Citation
+
+If you use this code or findings, please cite:
+
+```bibtex
+@article{ifath2025mathsf,
+  title={$$\backslash$mathsf $\{$streamline$\}$ $: Accelerating Deployment and Assessment of Real-Time Big Data Systems},
+  author={Ifath, Md Monzurul Amin and Melodia, Tommaso and Haque, Israat},
+  journal={IEEE Transactions on Parallel and Distributed Systems},
+  volume={36},
+  number={12},
+  pages={2455--2468},
+  year={2025},
+  publisher={IEEE}
+}
+```
+
+---
+
+## Contact
+
+**Md. Monzurul Amin Ifath**  
+PhD Candidate, Dalhousie University, Halifax, NS, Canada  
+monzurul.amin@dal.ca
