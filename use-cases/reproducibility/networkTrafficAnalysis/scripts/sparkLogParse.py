@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-# command to run this script: sudo python3 sparkLogParse.py <logDir>
+# command to run this script: sudo python3 sparkLogParse.py <spark log file path>
 
 import re
 import sys
@@ -69,7 +69,7 @@ def calcTriggerExec(logDir):
             totalExecTime += eTime
 
     avgExexTime = totalExecTime/(len(execTimes))
-    print('average time after reaching steady state(in ms):  '+str(avgExexTime))
+    print('average spark execution time after reaching steady state(in ms):  '+str(avgExexTime))
 
 # calculating trigger execution for all logs
 calcTriggerExec(logDir)

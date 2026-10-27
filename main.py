@@ -57,9 +57,6 @@ def killSubprocs(brokerPlace, zkPlace, prodDetailsList, streamProcDetailsList, c
 	# killing the topic duplicate python script
 	os.system("sudo pkill -9 -f topicDuplicate.py") 
 
-	# killing existing spark instances
-	# os.system("sudo pkill -f 'spark'")
-
 if __name__ == '__main__': 
 	parser = argparse.ArgumentParser(description='Emulate data sync in mission critical networks.')
 	parser.add_argument('topo', type=str, help='Network topology')
@@ -169,3 +166,5 @@ if __name__ == '__main__':
 
 	#Need to clean spark dependency before a new simulation
 	emuStreamProc.cleanStreamProcDependency()
+	#Need to kill existing spark instances before a new simulation
+	emuStreamProc.cleanStreamProcClusterState()

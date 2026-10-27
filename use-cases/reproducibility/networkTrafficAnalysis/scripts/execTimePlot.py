@@ -1,17 +1,67 @@
 #!/bin/usr/python3
 
+# =================== journal paper experiment results===================\
 import matplotlib.pyplot as plt
-
-fig = plt.figure()
+import numpy as np
 
 nConcurrentUsers = [20, 40, 60, 80, 100]
-avgExecTimeRound1 = [1585.595, 2074.278, 2420.265, 2587.151, 2432.62]
-plt.plot(nConcurrentUsers,avgExecTimeRound1,color='blue',linestyle='dotted')
+# data
+origAvgExecTimeWorker1 = np.array([2, 3, 3.25, 3.5, 4.5])
+origAvgExecTimeWorker2 = np.array([0.5, 0.7, 0.8, 1, 1.9])
+origAvgExecTimeWorker3 = np.array([0.4, 0.5, 0.7, 0.9, 1.7])
+
+s2gAvgExecTimeWorker1 = np.array([3750.18, 5225.75, 5793.75, 5995.32, 6700.25])
+s2gAvgExecTimeWorker2 = np.array([2549.19, 3272.77, 3971.19, 4827.34, 8178.64])
+s2gAvgExecTimeWorker3 = np.array([2398.92, 2960.01, 3282.86, 5282.38, 9502.92])
+
+# Normalize the data
+s2gAvgExecTimeWorker1 /= s2gAvgExecTimeWorker1[0]
+s2gAvgExecTimeWorker2 /= s2gAvgExecTimeWorker2[0]
+s2gAvgExecTimeWorker3 /= s2gAvgExecTimeWorker3[0]
+
+origAvgExecTimeWorker1 /= origAvgExecTimeWorker1[0]
+origAvgExecTimeWorker2 /= origAvgExecTimeWorker2[0]
+origAvgExecTimeWorker3 /= origAvgExecTimeWorker3[0]
+
+# Create a plot
+plt.plot(nConcurrentUsers, s2gAvgExecTimeWorker1, 's', linestyle='solid', label='stream2gym (one worker)')
+plt.plot(nConcurrentUsers, origAvgExecTimeWorker1, 'v', linestyle='dashed', label='Ocampo et al. (one worker)')
+plt.plot(nConcurrentUsers, s2gAvgExecTimeWorker2, 's', linestyle='solid', label='stream2gym (two Workers)')
+plt.plot(nConcurrentUsers, origAvgExecTimeWorker2, 'v', linestyle='dashed', label='Ocampo et al. (two Workers)')
+plt.plot(nConcurrentUsers, s2gAvgExecTimeWorker3, 's', linestyle='solid', label='stream2gym (three workers)')
+plt.plot(nConcurrentUsers, origAvgExecTimeWorker3, 'v', linestyle='dashed', label='Ocampo et al. (three workers)')
+
+plt.xlabel('Concurrent users', fontsize=22, fontweight='bold')
+plt.ylabel('Normalized runtime (x1)', fontsize=22, fontweight='bold')
+
+#plt.title('Distributed streaming processing execution time',fontsize=20)
+plt.legend(loc="upper left", frameon=True, fontsize=10)
+# plt.legend(loc="lower right", frameon=True, fontsize=10)
+
+ax = plt.gca()
+
+ax.set_xticks(np.arange(0, 101, step=20))
+ax.xaxis.set_tick_params(labelsize=18)
+#ax.set_yticks(np.arange(1.0, 2.1, step=0.25))
+ax.yaxis.set_tick_params(labelsize=18)
+
+plt.xlim((20, 102))
+
+plt.savefig("use-cases/reproducibility/networkTrafficAnalysis/plots/reprod-network-monitoring.pdf",format='pdf', bbox_inches="tight")
 
 
-plt.xlabel('Concurrent users', fontsize=16)
-plt.ylabel('Average execution time(ms)', fontsize=16)
-plt.title('Distributed streaming processing execution time',fontsize=20)
-plt.legend()
-plt.show()
+# =================== stream2gym ICDCS 2023 experiment results===================
+# import matplotlib.pyplot as plt
+# fig = plt.figure()
+
+# nConcurrentUsers = [20, 40, 60, 80, 100]
+# avgExecTimeRound1 = [1585.595, 2074.278, 2420.265, 2587.151, 2432.62]
+# plt.plot(nConcurrentUsers,avgExecTimeRound1,color='blue',linestyle='dotted')
+
+
+# plt.xlabel('Concurrent users', fontsize=16)
+# plt.ylabel('Average execution time(ms)', fontsize=16)
+# plt.title('Distributed streaming processing execution time',fontsize=20)
+# plt.legend()
+# plt.show()
 

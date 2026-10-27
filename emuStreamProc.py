@@ -71,3 +71,7 @@ def cleanStreamProcDependency():
 # 	os.system("sudo rm -rf logs/kafka/")
 	os.system("sudo rm -rf /root/.ivy2/cache")
 	os.system("sudo rm -rf /root/.ivy2/jars")
+
+def cleanStreamProcClusterState():
+	# killing existing spark instances
+	os.system("sudo pkill -f 'spark'")
