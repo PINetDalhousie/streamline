@@ -200,7 +200,7 @@ def spawnSPEClients(net, streamProcDetailsList):
 				print("pyflink is not installed in the pyflink directory, please run use_pyflink.py to install")
 				sys.exit(1)
 			else:
-				node.popen("sudo pyflink/bin/flink run --target local --python ../"+ speApp + " --jarfile ../dependency/jars/flink-sql-connector-kafka-1.17.1.jar" + " &", shell=True, cwd="pyflink")
+				node.popen("sudo env \"PYTHONPATH=$PYTHONPATH:.\" pyflink/bin/flink run --target local --python ../"+ speApp + " --jarfile ../dependency/jars/flink-sql-connector-kafka-1.17.1.jar" + " &", shell=True, cwd="pyflink")
 		#more elif's for more spes 
 
 def spawnKafkaDataStoreConnector(net, prodDetailsList, storePath):
