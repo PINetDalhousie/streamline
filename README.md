@@ -30,9 +30,9 @@ The tool was tested on Ubuntu 20.04.4 and is based on Python 3.8.10, Kafka 2.13-
   $ sudo apt install python3-pip mininet default-jdk xterm netcat
   
   $ sudo pip3 install mininet networkx kafka-python matplotlib python-snappy lz4 seaborn pyyaml seaborn
+
+  $ python -m pip install --target pyflink apache-flink==1.17.1
   ```
-  For Flink dependencies to be installed, must run the script in flink-use:
-  ``` python flink-use/use-flink.py ```
 
   3. You are ready to go! Should be able to get help using:
 
