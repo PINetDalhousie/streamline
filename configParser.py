@@ -155,7 +155,12 @@ def readStreamProcConfig(streamProcConfigPath, nodeID):
 	if speApp == "" or speApp == None:
 		print('ERROR: stream processing application path not specified correctly in node '+str(nodeID))
 	
-	return speApp
+	speCluster = "False" if streamProcConfig[0].get("cluster", "") is None else streamProcConfig[0].get("cluster", "")
+	nSPEWorkerInstances = "" if streamProcConfig[0].get("nSPEWorkerInstances", "") is None else streamProcConfig[0].get("nSPEWorkerInstances", "")
+	nWorkerCores = "" if streamProcConfig[0].get("nWorkerCores", "") is None else streamProcConfig[0].get("nWorkerCores", "")
+	workerMemory = "" if streamProcConfig[0].get("workerMemory", "") is None else streamProcConfig[0].get("workerMemory", "")
+	
+	return speApp, speCluster, nSPEWorkerInstances, nWorkerCores, workerMemory
 
 def readConfigParams(net, args):
 	inputTopoFile = args.topo
@@ -230,9 +235,11 @@ def readConfigParams(net, args):
 					streamProcType = ""
 					if 'streamProcType' in data: 
 						streamProcType = data['streamProcType']
-					streamProcApp = readStreamProcConfig(data["streamProcConfig"], nodeID)
+					streamProcApp, speCluster, nSPEWorkerInstances, nWorkerCores, workerMemory = readStreamProcConfig(data["streamProcConfig"], nodeID)
 					streamProcDetails = {"nodeId": nodeID, 'streamProcType': streamProcType, \
-										"applicationPath": streamProcApp}
+										"applicationPath": streamProcApp,\
+										"cluster": speCluster, "nSPEWorkerInstances": nSPEWorkerInstances, \
+										"nWorkerCores": nWorkerCores, "workerMemory": workerMemory}
 					streamProcDetailsList.append(streamProcDetails)
 			elif node[0] == 's':
 				nSwitches += 1

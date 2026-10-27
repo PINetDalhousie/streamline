@@ -33,10 +33,11 @@ $ sudo apt install python3-pcapy
          - for CUSTOM consumer, specify the consumer script path and number of consumer instances in this node.
      - sparkConfig: sparkConfig will contain the input source, spark application path and output sink. Input source is a kafka topic, output sink can be kafka topic/a file directory.
 
-## Running
+## Running (Spark local mode)
    
  ```sudo python3 main.py use-cases/reproducibility/networkTrafficAnalysis/input.graphml --time 300```
 
- <!-- To run application in a spark cluster mode
- sudo python3 main.py use-cases/reproducibility/networkTrafficAnalysis/input-cluster.graphml --time 300 --spark-cluster 1
-  -->
+## Runnning (Spark cluster mode) 
+ To run application in a spark cluster mode
+  ```sudo python3 main.py use-cases/reproducibility/networkTrafficAnalysis/input-cluster.graphml --time 300```
+ 
