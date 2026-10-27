@@ -27,3 +27,4 @@ use-cases/varying-networking-conditions/varying-link-latency/word-count/input-or
 use-cases/varying-networking-conditions/varying-link-bw/word-count/MFSTDataDir/
 tempScript.py
 use-cases/app-testing/document-analytics/demo/
+use-cases/varying-networking-conditions/varying-link-bw/military-coordination/logs/
