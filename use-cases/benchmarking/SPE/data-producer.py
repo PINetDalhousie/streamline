@@ -25,15 +25,6 @@ def processProdMsg(q):
 		except Exception as e:
 			logging.info('Message not produced. ID: %s; Error: %s', str(kPointerKey[0]), e)
 
-
-def readXmlFileMessage(file):
-	lines = file.readlines()
-	readFile = ' '
-	for line in lines:
-		readFile += line
-	logging.info("Read xml file is : %s", readFile)
-	return readFile
-
 def processFileMessage(filePath):
 	file = open(filePath, 'r')
 	message = file.read().encode()
@@ -74,16 +65,22 @@ try:
 	prodMsgThread.start()
 
 	while True:				
+		# newMsgID = str(msgID).zfill(6)
+		# bMsgID = bytes(newMsgID, 'utf-8')
+		# newNodeID = nodeID.zfill(2)
+		# bNodeID = bytes(newNodeID, 'utf-8')
+		# bMsg = bNodeID + bMsgID + bytearray(message)
+
 		newMsgID = str(msgID).zfill(6)
-		bMsgID = bytes(newMsgID, 'utf-8')
-		newNodeID = nodeID.zfill(2)
-		bNodeID = bytes(newNodeID, 'utf-8')
-		bMsg = bNodeID + bMsgID + bytearray(message)
+		msgIDString = " Msg ID: " + newMsgID 
+		msgString = " Msg: "
+
+		bMsg = bytes(msgIDString,'utf-8')+ bytes(msgString,'utf-8') + message
 		topicName = 'topic-0'
 
 		prodStatus = producer.send(topicName, bMsg)
-		logging.info('Topic-name: %s; Message ID: %s; Message: %s',\
-					topicName, newMsgID, message)
+		# logging.info('Topic-name: %s; Message ID: %s; Message: %s',\
+		# 			topicName, newMsgID, message)
 
 		msgInfo = {}
 		msgInfo[newMsgID] = prodStatus

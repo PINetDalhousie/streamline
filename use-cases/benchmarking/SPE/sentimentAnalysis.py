@@ -7,41 +7,32 @@ import time
 import sys
 import logging
 
-def preprocessing(lines):
-    words = lines.select(explode(split(lines.value, "t_end")).alias("word"))
-    words = words.na.replace('', None)
-    words = words.na.drop()
-    words = words.withColumn('word', F.regexp_replace('word', r'http\S+', ''))
-    words = words.withColumn('word', F.regexp_replace('word', '@\w+', ''))
-    words = words.withColumn('word', F.regexp_replace('word', '#', ''))
-    words = words.withColumn('word', F.regexp_replace('word', 'RT', ''))
-    words = words.withColumn('word', F.regexp_replace('word', ':', ''))
-    return words
-
 # text classification
 def polarity_detection(text):
     return TextBlob(text).sentiment.polarity
 def subjectivity_detection(text):
     return TextBlob(text).sentiment.subjectivity
-def text_classification(words):
+def text_classification(lines):
     # polarity detection
     polarity_detection_udf = udf(polarity_detection, StringType())
-    words = words.withColumn("polarity", polarity_detection_udf("word"))
+    lines = lines.withColumn("polarity", polarity_detection_udf("msg"))
     # subjectivity detection
     subjectivity_detection_udf = udf(subjectivity_detection, StringType())
-    words = words.withColumn("subjectivity", subjectivity_detection_udf("word"))
-    return words
+    lines = lines.withColumn("subjectivity", subjectivity_detection_udf("msg"))
+    return lines
 
 if __name__ == "__main__":
     try:        
         kafkaNode = "10.0.0.1:9092"
         sparkInputFrom = "topic-0"
+        sparkOutputTo = 'topic-1'
 
         logging.basicConfig(filename="logs/output/spark1.log",\
 		                    format='%(asctime)s %(levelname)s:%(message)s',\
                             level=logging.INFO)
         logging.info("node: 1")
-        logging.info("input: "+sparkInputFrom)
+        logging.info("input topic: "+sparkInputFrom)
+        logging.info("output topic: "+sparkOutputTo)
 
         # create Spark session
         spark = SparkSession.builder.appName("TwitterSentimentAnalysis").getOrCreate()
@@ -57,34 +48,35 @@ if __name__ == "__main__":
             .option('subscribe', sparkInputFrom)\
             .load()\
             .selectExpr("CAST(value AS STRING)")
+        logging.info("Schema of input stream: "+str(lines.printSchema))
 
+        # Separating the data to get the message ID on one side and the message on the other
+        split_result = split("value", " Msg: ")
+        lines = lines.select(split_result.getItem(0).alias('msgIDString'), split_result.getItem(1).alias('msg'))
+        # Extracting the message ID
+        split_result = split("msgIDString", "Msg ID: ")
+        lines = lines.select(split_result.getItem(1).alias('msgID'), 'msg')
+        logging.info("Is Streaming: "+str(lines.isStreaming))
+        logging.info("Schema of lines stream after splitting "+str(lines.printSchema))
 
-        # Preprocess the data
-        words = preprocessing(lines)
         # text classification to define polarity and subjectivity
-        words = text_classification(words)
-
-        words = words.repartition(1)
+        lines = text_classification(lines)
+        logging.info("Schema of words stream after text classification "+str(lines.printSchema))
         
-        # sink to CSV file
-        # output = words.writeStream.queryName("all_tweets")\
-        #     .format("csv")\
-        #     .option("path", sparkOutputTo+"/sentiment-analysis-result")\
-        #     .option("checkpointLocation", sparkOutputTo+"/sentiment-analysis-checkpoint")\
-        #     .start()
-        #     # .trigger(processingTime='60 seconds').start()
+        result = lines.select( concat( lit('MessageID: '), 'msgID', \
+                            lit('Message: '), 'msg', \
+                            lit(' Polarity: '), 'polarity', \
+                            lit('  Subjectivity: '), 'subjectivity' ) \
+                            .alias('value') )
 
-        # sink to kafka
-        sparkOutputTo = 'topic-1'
-        logging.info("output: "+sparkOutputTo)
-        output = words.writeStream \
+        # Write data to the Kafka sink
+        output = result.writeStream \
             .format("kafka") \
             .option("kafka.bootstrap.servers", kafkaNode) \
             .option("topic", sparkOutputTo) \
-            .option("checkpointLocation", "logs/output/wordcount_checkpoint_intermediate") \
+            .option("checkpointLocation", "logs/output/kafka-checkpoint") \
             .start()
-        output.awaitTermination(50)
-        output.stop()
+        output.awaitTermination()
 
     except Exception as e:
         sys.exit(1)
