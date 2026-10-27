@@ -56,6 +56,6 @@ stream of files, splits it into words, and stores word fre-quencies into another
      - streamProcCfg: stream processing engine configuration. 
 
 ## Running
- ```sudo python3 main.py use-cases/app-testing/word-count/input.graphml```
+ ```sudo python3 main.py use-cases/app-testing/word-count/spark-word-count/input.graphml```
 
 

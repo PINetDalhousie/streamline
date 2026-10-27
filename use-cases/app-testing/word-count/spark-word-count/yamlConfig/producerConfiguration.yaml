@@ -1,6 +1,6 @@
 # producer configuration file h1
 ---
-  filePath: use-cases/app-testing/word-count/dataDir/randomText2.txt
+  filePath: use-cases/app-testing/word-count/spark-word-count/dataDir/randomText2.txt
   topicName: inTopic
   totalMessages: 1
   producerInstances: 1

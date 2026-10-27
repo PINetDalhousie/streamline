@@ -1,11 +1,5 @@
-## Command to run script: 
-#first, need to be in pyflink directory.
-# then enter command: sudo env "PYTHONPATH=$PYTHONPATH:." pyflink/ bin/flink run --target local --python ../use-cases/app-testing/word-count/flink-word-count/flink-word-count.py --jarfile ../dependency/jars/flink-sql-connector-kafka-1.17.1.jar
-
-import argparse
 import logging
 import sys
-#sys.path.append(".")
 from pyflink.common.watermark_strategy import WatermarkStrategy
 from pyflink.common.serialization import Encoder
 from pyflink.common.typeinfo import Types
@@ -14,6 +8,7 @@ from pyflink.datastream.connectors.file_system import FileSource, StreamFormat, 
 from pyflink.datastream.connectors.kafka import KafkaSource
 from pyflink.datastream.connectors.kafka import KafkaSink, KafkaRecordSerializationSchema
 from pyflink.common import SimpleStringSchema
+
 log_file_path = "logs/output/flink.log"
 IN_TOPIC = "inTopic" #Same as in spark
 OUT_TOPIC = "outTopic"
@@ -22,7 +17,7 @@ logging.basicConfig(filename=log_file_path, level=logging.INFO, \
 logging.info("input: "+IN_TOPIC)
 logging.info("output: "+ OUT_TOPIC)
 
-def word_count(input_path, output_path):
+def word_count():
     env = StreamExecutionEnvironment.get_execution_environment()
     logging.warning("created environment")
     env.set_runtime_mode(RuntimeExecutionMode.STREAMING)
@@ -69,22 +64,5 @@ def word_count(input_path, output_path):
     # submit for execution
     env.execute()
 if __name__ == '__main__':
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-        '--input',
-        dest='input',
-        required=False,
-        help='Input file to process.')
-    parser.add_argument(
-        '--output',
-        dest='output',
-        required=False,
-        help='Output file to write results to.')
-
-    argv = sys.argv[1:]
-    known_args, _ = parser.parse_known_args(argv)
-
-
-    word_count(known_args.input, known_args.output)
+    word_count()
     logging.info("successfully completed")
