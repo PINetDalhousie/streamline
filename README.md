@@ -40,7 +40,7 @@ The tool was tested on Ubuntu jammy (22.04LTS). It is based on Python 3.8.10 and
   
   $ sudo pip3 install mininet networkx kafka-python matplotlib python-snappy lz4 seaborn pyyaml seaborn
 
-  $ python -m pip install --target pyflink apache-flink==1.17.1
+  $ sudo python3 -m pip install --target pyflink apache-flink==1.17.1
   
   $ sudo pip3 install --target spark/pyspark pyspark==3.2.1
   ```
