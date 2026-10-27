@@ -23,6 +23,8 @@ import emuLogs
 import emuStreamProc
 import emuDataStore
 import configParser
+import emuRMQ
+from rabbit_lib import RabbitMQLib
 
 pID=0
 popens = {}
@@ -56,6 +58,12 @@ def killSubprocs(brokerPlace, zkPlace, prodDetailsList, streamProcDetailsList, c
 
 	# killing the topic duplicate python script
 	os.system("sudo pkill -9 -f topicDuplicate.py") 
+
+def checkSpecificValue(myList, key, specificValue):
+    for myDict in myList:
+        if key in myDict and myDict[key] != specificValue:
+            return False
+    return True
 
 if __name__ == '__main__': 
 	parser = argparse.ArgumentParser(description='Emulate data sync in mission critical networks.')
@@ -95,6 +103,7 @@ if __name__ == '__main__':
 	print("Number of zookeepers in the topology: "+str(len(zkPlace)))
 	print("Number of brokers in the topology: "+str(len(brokerPlace)))
 	print("Number of topics: "+str(nTopics))
+	# print("Number of RabbitMQ brokers in the topology: "+str(len(rMQBrokerPlace)))
 	
 	# checking whether the application is only kafka or kafka-spark
 	storePath = emuStreamProc.getStreamProcDetails(net, args.topo)
@@ -111,6 +120,7 @@ if __name__ == '__main__':
 	emuDataStore.cleanDataStoreState()
 	emuKafka.cleanKafkaState(brokerPlace)
 	emuZk.cleanZkState(zkPlace)
+	emuRMQ.cleanRabbitState()
         
 	if storePath != "":
 		print("Data store path: "+storePath)
@@ -119,8 +129,16 @@ if __name__ == '__main__':
 		net.addNAT().configDefault()  
 
 	logDir = emuLogs.configureLogDir(nSwitches, nTopics, args.captureAll)
-	emuZk.configureZkCluster(zkPlace)
-	emuKafka.configureKafkaCluster(brokerPlace, zkPlace)
+
+	rMQBrokerPlace = []
+	if checkSpecificValue(brokerPlace, "brokerType", "rMQ") == True:
+		print("Configuring RabbitMQ cluster")
+		rMQBrokerPlace = [item['nodeId'] for item in brokerPlace]
+		emuRMQ.runRMQConfigure(net, rMQBrokerPlace)
+	elif checkSpecificValue(brokerPlace, "brokerType", "kafka") == True:
+		print("Configuring Kafka cluster")
+		emuZk.configureZkCluster(zkPlace)
+		emuKafka.configureKafkaCluster(brokerPlace, zkPlace)
 
 	#Start network
 	net.start()
@@ -139,11 +157,13 @@ if __name__ == '__main__':
 	#Start monitoring tasks
 	popens[pID] = subprocess.Popen("sudo python3 bandwidth-monitor.py "+str(nSwitches)+" &", shell=True)
 	pID += 1
-
-	emuZk.runZk(net, zkPlace, logDir)
-	emuKafka.runKafka(net, brokerPlace)
     
-	emuLoad.runLoad(net, args, topicPlace, prodDetailsList, consDetailsList, streamProcDetailsList,\
+	if len(rMQBrokerPlace) > 0:
+		emuLoad.runRMQLoad(net, prodDetailsList, consDetailsList, args)
+	else:
+		emuZk.runZk(net, zkPlace, logDir)
+		emuKafka.runKafka(net, brokerPlace)
+		emuLoad.runLoad(net, args, topicPlace, prodDetailsList, consDetailsList, streamProcDetailsList,\
 		 storePath, isDisconnect, dcDuration, dcLinks, logDir)
 
 	# CLI(net)
@@ -154,14 +174,16 @@ if __name__ == '__main__':
 
 	net.stop()
 	logging.info('Network stopped')
+	emuLogs.get_rabbitmq_logs()
 
 	# Clean kafka-MySQL connection state before new simulation
 	if storePath != "":
 		emuDataStore.cleanDataStoreState()
 
-	#Need to clean both kafka and zookeeper state before a new simulation
+	#Need to clean all kafka and zookeeper state before a new simulation
 	emuKafka.cleanKafkaState(brokerPlace)
 	emuZk.cleanZkState(zkPlace)
+	emuRMQ.cleanRabbitState()
 
 	#Need to clean spark dependency before a new simulation
 	emuStreamProc.cleanStreamProcDependency()

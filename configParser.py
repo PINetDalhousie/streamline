@@ -28,8 +28,10 @@ def validateBrokerParameters(brokerConfig, nodeID, replicaMaxWait, replicaMinByt
 		print("ERROR in producer at node "+str(nodeID)+": replica.fetch.wait.max.ms must be less than the replica.lag.time.max.ms value of " +  str(REPLICA_LAG_TIME_MAX_MS) + " at all times.")
 		sys.exit(1)
 	
-def readBrokerConfig(brokerConfigPath, nodeID):
-	brokerConfig = readYAMLConfig(brokerConfigPath)
+def readBrokerConfig(brokerType, brokerConfigPath, nodeID):
+	brokerConfig = []
+	if brokerConfigPath != "":
+		brokerConfig = readYAMLConfig(brokerConfigPath)
 
 	# Apache Kafka broker parameters
 	if len(brokerConfig) == 0:
@@ -41,7 +43,7 @@ def readBrokerConfig(brokerConfigPath, nodeID):
 
 	validateBrokerParameters(brokerConfig, nodeID, replicaMaxWait, replicaMinBytes)
 
-	brokerDetails = {"nodeId": nodeID, "replicaMaxWait": replicaMaxWait, 'replicaMinBytes': replicaMinBytes}
+	brokerDetails = {"nodeId": nodeID, "brokerType": brokerType, "replicaMaxWait": replicaMaxWait, 'replicaMinBytes': replicaMinBytes}
 	print("Broker details at node "+str(nodeID)+":")
 	print(brokerDetails)
 
@@ -177,6 +179,8 @@ def readConfigParams(net, args):
 	consDetailsList = []
 	streamProcDetailsList = []
 
+	rMQBrokerPlace = []
+
 	#Read topo information
 	try:
 		inputTopo = nx.read_graphml(inputTopoFile)
@@ -220,9 +224,14 @@ def readConfigParams(net, args):
 					else:
 						print("ERROR: zookeeper attribute only supports boolean input. Please check zookeeper attribute seting in node "+str(node))
 						sys.exit(1)
+				brokerType = "kafka"
+				brokerConfig = ""
+				if 'brokerType' in data: 
+					brokerType = data['brokerType']
 				if 'brokerConfig' in data: 
-					brokerDetails = readBrokerConfig(data["brokerConfig"], nodeID)
-					brokerPlace.append(brokerDetails)
+					brokerConfig = data["brokerConfig"]
+				brokerDetails = readBrokerConfig(brokerType, brokerConfig, nodeID)
+				brokerPlace.append(brokerDetails)
 				if 'producerType' in data: 
 					producerType = data["producerType"]
 					prodDetails = readProdConfig(data["producerConfig"], producerType, nodeID)
@@ -241,6 +250,15 @@ def readConfigParams(net, args):
 										"cluster": speCluster, "nSPEWorkerInstances": nSPEWorkerInstances, \
 										"nWorkerCores": nWorkerCores, "workerMemory": workerMemory}
 					streamProcDetailsList.append(streamProcDetails)
+
+				# if 'rMQBroker' in data:
+				# 	if data["rMQBroker"] == 1:
+				# 		rMQBrokerPlace.append(node[1:]) 
+				# 	elif data["rMQBroker"] == 0:
+				# 		pass
+				# 	else:
+				# 		print("ERROR: rMQBroker attribute only supports boolean input. Please check rMQBroker attribute seting in node "+str(node))
+				# 		sys.exit(1)
 			elif node[0] == 's':
 				nSwitches += 1
 				switchPlace.append(node[1:]) 
@@ -248,10 +266,10 @@ def readConfigParams(net, args):
 		print("Node attributes are not set properly: "+str(e))
 		sys.exit(1)
 
-	print("zookeepers:")
-	print(*zkPlace)
-	# print("brokers: \n")
-	# print(*brokerPlace)
+	# print("zookeepers:")
+	# print(*zkPlace)
+	print("brokers: \n")
+	print(*brokerPlace)
 
 	# print("producer details: ")
 	# print(*prodDetailsList)
