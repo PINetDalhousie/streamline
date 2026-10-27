@@ -66,3 +66,4 @@ def word_count():
 if __name__ == '__main__':
     word_count()
     logging.info("successfully completed")
+    print("done")

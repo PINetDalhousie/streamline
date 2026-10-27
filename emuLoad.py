@@ -203,13 +203,14 @@ def spawnSPEClients(net, streamProcDetailsList):
 				# 		use-cases/reproducibility/networkTrafficAnalysis/topicDuplicate.py &", shell=True)
 		elif speType == "Flink":
 			if not(os.path.exists("pyflink/pyflink/bin")): 
-				print("pyflink is nprocess =ot installed in the pyflink directory, check README to install")
+				print("pyflink is not installed in the pyflink directory, check README to install")
 				sys.exit(1)
 			else:
 				try:
 					print("Starting Flink job")
 					process = node.popen("sudo env \"PYTHONPATH=$PYTHONPATH:.\"/pyflink/pyflink/bin/flink run --target local --python "+ speApp + " --jarfile dependency/jars/flink-sql-connector-kafka-1.17.1.jar" + " &", shell=True, cwd="pyflink")
-					
+					# process = node.popen("sudo env \"PYTHONPATH=$PYTHONPATH:/home/monzurul/Desktop/streamline/pyflink\" /home/monzurul/Desktop/streamline/pyflink/pyflink/bin/flink run --target local --python "+ speApp + " --jarfile /home/monzurul/Desktop/streamline/dependency/jars/flink-sql-connector-kafka-1.17.1.jar" + " &", shell=True, cwd="pyflink")
+
 					# process = node.popen("sudo env \"PYTHONPATH=$PYTHONPATH:\" .pyflink/pyflink/bin/flink run --target local --python "+ "." + speApp + " --jarfile .dependency/jars/flink-sql-connector-kafka-1.17.1.jar" + " &", shell=True, cwd="pyflink", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 					# Capture the output and error streams
 					stdout, stderr = process.communicate()
