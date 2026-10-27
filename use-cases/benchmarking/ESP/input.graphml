@@ -40,7 +40,7 @@
     <node id="s11"/>
 
     <node id="h1">
-      <data key="rMQBroker">1</data>
+      <data key="brokerType">rMQ</data>
       
       <data key="prodType">CUSTOM</data>
       <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
@@ -49,7 +49,7 @@
 	  </node>
     
     <node id="h2">
-      <data key="rMQBroker">1</data>
+      <data key="brokerType">rMQ</data>
       
       <data key="prodType">CUSTOM</data>
       <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
@@ -58,7 +58,7 @@
 	  </node>   
 
     <node id="h3">   
-      <data key="rMQBroker">1</data>
+      <data key="brokerType">rMQ</data>
       
       <data key="prodType">CUSTOM</data>
       <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
@@ -67,7 +67,7 @@
 	  </node>
 
     <node id="h4">   
-      <data key="rMQBroker">1</data>
+      <data key="brokerType">rMQ</data>
       
       <data key="prodType">CUSTOM</data>
       <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
@@ -76,7 +76,7 @@
 	  </node>
 
     <node id="h5">   
-      <data key="rMQBroker">1</data>
+      <data key="brokerType">rMQ</data>
       
       <data key="prodType">CUSTOM</data>
       <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
@@ -85,7 +85,7 @@
 	  </node>
 
     <node id="h6">   
-      <data key="rMQBroker">1</data>
+      <data key="brokerType">rMQ</data>
       
       <data key="prodType">CUSTOM</data>
       <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
@@ -94,7 +94,7 @@
 	  </node>
 
     <node id="h7">   
-      <data key="rMQBroker">1</data>
+      <data key="brokerType">rMQ</data>
       
       <data key="prodType">CUSTOM</data>
       <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
@@ -103,7 +103,7 @@
 	  </node>
 
     <node id="h8">
-      <data key="rMQBroker">1</data>
+      <data key="brokerType">rMQ</data>
       
       <data key="prodType">CUSTOM</data>
       <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
@@ -112,7 +112,7 @@
 	  </node>
 
     <node id="h9">   
-      <data key="rMQBroker">1</data>
+      <data key="brokerType">rMQ</data>
       
       <data key="prodType">CUSTOM</data>
       <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>
@@ -121,7 +121,7 @@
 	  </node>
 
     <node id="h10">
-      <data key="rMQBroker">1</data>
+      <data key="brokerType">rMQ</data>
       
       <data key="prodType">CUSTOM</data>
       <data key="prodCfg">use-cases/benchmarking/ESP/yamlConfig/producerConfiguration.yaml</data>

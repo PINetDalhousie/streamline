@@ -102,8 +102,8 @@ def spawnProducers(net, nTopics, args, prodDetailsList, topicPlace):
 
 			while prodInstance <= int(nProducerInstances):
 				if producerType == 'CUSTOM':
+					print("Producer type: "+producerType)
 					node.popen("python3 "+ producerPath +" " +nodeID+" "+str(prodInstance)+" &", shell=True)
-					
 				else:		
 					try:
 						node.popen("python3 "+producerPath+" "+nodeID+" "+str(prodInstance)+" "+prodNumberOfFiles+" "+str(mRate)\

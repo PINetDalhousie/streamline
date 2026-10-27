@@ -9,7 +9,7 @@ x = [50, 100, 150, 200, 250, 300]
 testbedLatency = [5.336097564048967, 6.015331445134474, 7.054284886408087, 7.917727105858488, 8.38294458985755, 11.022253629069395]
 simLatency = [4.900156924801731, 6.106417888015066, 6.7240695724017385, 7.904916169204149, 8.57244256787511, 10.74861081489105]
 
-plt.plot(x, simLatency, label='stream2gym', marker='^', linewidth=4.0, markersize=10.0)
+plt.plot(x, simLatency, label='streamline', marker='^', linewidth=4.0, markersize=10.0)
 plt.plot(x, testbedLatency, label='Hardware', marker='o', linewidth=4.0, linestyle='dotted', color='red', markersize=10.0)
 
 plt.xlabel("Link delay (ms)", labelpad=9, fontweight='bold', fontsize=22)
@@ -74,7 +74,7 @@ plt.savefig('../plots/military-coordination-accuracy.pdf')
 #     print("Simulation experiment average latency for " + str(xSim[index]) + "ms link delay experiment: " + str(item) + " seconds")
 
 
-# plt.plot(xSim, simLatency, label='stream2gym', marker='^', linewidth=4.0, markersize=10.0)
+# plt.plot(xSim, simLatency, label='streamline', marker='^', linewidth=4.0, markersize=10.0)
 # plt.plot(xTestbed, testbedLatency, label='Hardware', marker='o', linewidth=4.0, linestyle='dotted', color='red', markersize=10.0)
 
 # plt.xlabel("Link delay (ms)", labelpad=9, fontweight='bold', fontsize=22)
