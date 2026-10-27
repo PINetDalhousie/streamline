@@ -3,11 +3,17 @@
 Tool for fast prototyping of distributed stream processing applications.
 
 The tool was tested on Ubuntu jammy (22.04LTS). It is based on Python 3.8.10 and supports the following tools:
+- Apache Kafka 2.13-4.0.0
+- RabbitMQ 4.1.0
+- Apache Spark 3.5.5
+- Apache Flink 2.0.0
+- MySQL 8.0.30
+
+<!--- Preliminary versions 
 - Apache Kafka 2.13-2.8.0
 - RabbitMQ 3.9.13
 - Apache Spark 3.2.1
-- Apache Flink 1.17.1
-- MySQL 8.0.30
+- Apache Flink 1.17.1 -->
 
 ## Getting started
 
@@ -28,9 +34,9 @@ The tool was tested on Ubuntu jammy (22.04LTS). It is based on Python 3.8.10 and
   - Matplotlib 3.3.4
   - Seaborn 0.12.1
   - PyYAML 5.3.1
-  - Apache Flink 1.17.1
-  - PySpark 3.2.1
-  - Apache Spark 3.2.1 (optional dependency. Required to facilitate Spark cluster support)
+  - Apache Flink 2.0.0
+  - PySpark 3.5.5
+  - Apache Spark 3.5.5 (optional dependency. Required to facilitate Spark cluster support)
 
   Most dependencies can be installed using `apt install` and `pip3 install`:
   
@@ -40,10 +46,12 @@ The tool was tested on Ubuntu jammy (22.04LTS). It is based on Python 3.8.10 and
   
   $ sudo pip3 install mininet networkx kafka-python matplotlib python-snappy lz4 seaborn pyyaml seaborn
 
-  $ sudo python3 -m pip install --target pyflink apache-flink==1.17.1
+  $ sudo python3 -m pip install --target pyflink apache-flink==2.0.0
   
-  $ sudo pip3 install --target spark/pyspark pyspark==3.2.1
+  $ sudo pip3 install --target spark/pyspark pyspark==3.5.5
   ```
+  <!-- $ sudo python3 -m pip install --target pyflink apache-flink==1.17.1 
+  $ sudo pip3 install --target spark/pyspark pyspark==3.2.1 -->
 
   For RabbitMQ support, do the following:
   ```bash
