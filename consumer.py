@@ -20,7 +20,7 @@ try:
 
 	nodeID = nodeName[1:]
     
-	logging.basicConfig(filename="logs/output/"+"cons-node"+nodeID+\
+	logging.basicConfig(filename="logs/output/cons/"+"cons-node"+nodeID+\
 		"-instance"+str(consInstance)+".log",
 		format='%(asctime)s %(levelname)s:%(message)s',
 		level=logging.INFO)    
@@ -47,15 +47,12 @@ try:
 			if 'File: ' in msgContent:
 				fileNumber = msgContent.split('File: ')[1]
 				logging.info("Message ID: %s",str(i))
-				logging.info("File %s Received   Message Received word: %s", fileNumber, msgContent)          
-				i += 1
+				logging.info("File %s Received   Message Received word: %s", fileNumber, msgContent)
 
 			else:
-				# logging.info("Message ID: %s",str(i))
 				logging.info("Message received: " + msgContent)
-				i += 1
-
-
+			
+			i += 1
 
 except Exception as e:
 	logging.error(e)
